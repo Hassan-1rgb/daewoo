@@ -94,7 +94,7 @@ EMAIL_PORT = 465
 EMAIL_USE_TLS = False
 EMAIL_USE_SSL = True
 EMAIL_HOST_USER = 'hassanali.jutt576@gmail.com'
-EMAIL_HOST_PASSWORD = 'pybv zxte flhg uwax'
+EMAIL_HOST_PASSWORD = '*************'
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 
