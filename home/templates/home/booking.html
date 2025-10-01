@@ -1,0 +1,992 @@
+{% extends "home/base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="booking-container">
+  <div class="container">
+    <div class="booking-header text-center mb-5">
+      <h1 class="display-5 fw-bold mb-3">
+        <span class="icon-bus">🚌</span> Book Your Journey
+      </h1>
+      <p class="lead text-muted">Find and book the perfect bus for your travel needs</p>
+    </div>
+
+    {% if messages %}
+      <div class="messages-container mb-4">
+        {% for message in messages %}
+          <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+            <div class="d-flex align-items-center">
+              <span class="alert-icon me-2">{% if message.tags == 'success' %}✓{% elif message.tags == 'error' %}✗{% elif message.tags == 'warning' %}⚠️{% else %}ℹ️{% endif %}</span>
+              <div>{{ message }}</div>
+            </div>
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    <!-- Search Form -->
+    <div class="search-form-card card shadow-sm mb-5">
+      <div class="card-body p-4">
+        <form method="get" action="{% url 'booking' %}" class="row g-3">
+          <div class="col-md-3">
+            <label for="origin" class="form-label fw-semibold">From</label>
+            <div class="dropdown custom-dropdown">
+              <button class="btn btn-outline-secondary dropdown-toggle w-100 text-start" type="button" id="originDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                <span class="dropdown-text">
+                  {% if request.GET.origin %}{{ request.GET.origin }}{% else %}-- Select Origin --{% endif %}
+                </span>
+              </button>
+              <ul class="dropdown-menu w-100" aria-labelledby="originDropdown">
+                <li class="dropdown-search-container">
+                  <input type="text" class="form-control form-control-sm" id="originSearchInput" placeholder="Search origin...">
+                </li>
+                <li><hr class="dropdown-divider"></li>
+                <div class="dropdown-options-container">
+                  <div class="origin-options">
+                    {% for city in origins %}
+                      <li><a class="dropdown-item {% if city == request.GET.origin %}active{% endif %}" href="#" data-value="{{ city }}">{{ city }}</a></li>
+                    {% endfor %}
+                  </div>
+                </div>
+              </ul>
+              <input type="hidden" name="origin" id="origin" value="{{ request.GET.origin }}" required>
+            </div>
+          </div>
+
+          <div class="col-md-3">
+            <label for="destination" class="form-label fw-semibold">To</label>
+            <div class="dropdown custom-dropdown">
+              <button class="btn btn-outline-secondary dropdown-toggle w-100 text-start" type="button" id="destinationDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                <span class="dropdown-text">
+                  {% if request.GET.destination %}{{ request.GET.destination }}{% else %}-- Select Destination --{% endif %}
+                </span>
+              </button>
+              <ul class="dropdown-menu w-100" aria-labelledby="destinationDropdown">
+                <li class="dropdown-search-container">
+                  <input type="text" class="form-control form-control-sm" id="destinationSearchInput" placeholder="Search destination...">
+                </li>
+                <li><hr class="dropdown-divider"></li>
+                <div class="dropdown-options-container">
+                  <div class="destination-options">
+                    {% for city in destinations %}
+                      <li><a class="dropdown-item {% if city == request.GET.destination %}active{% endif %}" href="#" data-value="{{ city }}">{{ city }}</a></li>
+                    {% endfor %}
+                  </div>
+                </div>
+              </ul>
+              <input type="hidden" name="destination" id="destination" value="{{ request.GET.destination }}" required>
+            </div>
+          </div>
+
+          <div class="col-md-3">
+            <label for="date" class="form-label fw-semibold">Journey Date</label>
+            <div class="input-group date-input-group">
+              <input type="date" name="booking_date" id="date" class="form-control" value="{{ booking_date }}" required>
+            </div>
+          </div>
+
+          <div class="col-md-3 d-flex align-items-end">
+            <button type="submit" class="btn btn-primary w-100 search-btn">
+              <i class="bi bi-search me-2"></i> Find Buses
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    {% if buses %}
+      <div class="results-header d-flex justify-content-between align-items-center mb-4">
+        <h3 class="mb-0">Available Buses</h3>
+        <div class="current-time-info">
+          <small class="text-muted d-block text-end">
+            <i class="bi bi-clock me-1"></i> {{ current_time_pk }} - Current Time (PKT)
+          </small>
+          {% if booking_date_obj == current_date %}
+            <span class="badge bg-success mt-1">Showing buses departing after current time</span>
+          {% elif booking_date_obj > current_date %}
+            <span class="badge bg-info mt-1">Showing all buses for {{ booking_date|date:"M d, Y" }}</span>
+          {% endif %}
+        </div>
+      </div>
+
+      <div class="buses-list">
+        {% for bus in buses %}
+          <div class="bus-card card mb-4 shadow-sm hover-shadow">
+            <div class="card-body">
+              <div class="row align-items-center">
+                <div class="col-md-8">
+                  <div class="d-flex align-items-center mb-2">
+                    <h5 class="card-title mb-0 me-3">
+                      <i class="bi bi-clock-fill text-primary me-2"></i>
+                      {{ bus.departure_time|time:"g:i A" }}
+                      <i class="bi bi-arrow-right mx-2 text-muted"></i>
+                      {% if bus.arrival_time %}{{ bus.arrival_time|time:"g:i A" }}{% else %}N/A{% endif %}
+                    </h5>
+                    <span class="badge bg-success">Available</span>
+                  </div>
+                  
+                  <div class="route-info d-flex align-items-center mb-3">
+                    <div class="route-station">
+                      <div class="fw-bold">{{ bus.route.origin }}</div>
+                      <div class="text-muted small">{{ bus.departure_time|time:"g:i A" }}</div>
+                    </div>
+                    
+                    <div class="route-path mx-3 flex-grow-1">
+                      <div class="route-line">
+                        <div class="route-dot start"></div>
+                        <div class="route-dash"></div>
+                        <div class="route-dot end"></div>
+                      </div>
+                    </div>
+                    
+                    <div class="route-station text-end">
+                      <div class="fw-bold">{{ bus.route.destination }}</div>
+                      <div class="text-muted small">{% if bus.arrival_time %}{{ bus.arrival_time|time:"g:i A" }}{% else %}N/A{% endif %}</div>
+                    </div>
+                  </div>
+                  
+                  <div class="bus-details">
+                    <span class="badge bg-light text-dark me-2">
+                      <i class="bi bi-bus-front me-1"></i> {{ bus.bus_type }}
+                    </span>
+                    
+                    {% if bus.duration %}
+                      <span class="badge bg-light text-dark me-2">
+                        <i class="bi bi-hourglass-split me-1"></i> {{ bus.duration }}
+                      </span>
+                    {% endif %}
+                    
+                    {% if bus.distance %}
+                      <span class="badge bg-light text-dark">
+                        <i class="bi bi-signpost-2 me-1"></i> {{ bus.distance }} km
+                      </span>
+                    {% endif %}
+                  </div>
+                </div>
+                
+                <div class="col-md-4 text-end">
+                  <div class="price-section mb-3">
+                    <div class="text-muted small">Starting from</div>
+                    <div class="price-display">
+                      <span class="currency">Rs</span>
+                      <span class="amount">{{ bus.price }}</span>
+                    </div>
+                  </div>
+                  
+                  <div class="seats-info mb-3">
+                    <div class="text-muted small">
+                      {% if bus.available_seats_count is not None %}
+                          <i class="bi bi-person-check me-1"></i> {{ bus.available_seats_count }} seats available
+                      {% else %}
+                          <i class="bi bi-question-circle me-1"></i> N/A seats available
+                      {% endif %}
+                    </div>
+                  </div>
+                  
+                  <button class="btn btn-primary book-btn" data-bs-toggle="modal" data-bs-target="#busModal{{ bus.id }}">
+                    <i class="bi bi-check-circle me-2"></i> Book Now
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Seat Selection Modal -->
+          <div class="modal fade" id="busModal{{ bus.id }}" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-lg modal-dialog-centered">
+              <div class="modal-content">
+                <form method="post" action="{% url 'confirm_booking' bus.id %}">
+                  {% csrf_token %}
+                  <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title">
+                      <i class="bi bi-bus-front me-2"></i> Seat Selection
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                  </div>
+                  <div class="modal-body p-4">
+                    <input type="hidden" name="booking_date" value="{{ booking_date }}">
+                    <input type="hidden" name="selected_seats" class="seat-number-input">
+
+                    <!-- Journey Info -->
+                    <div class="journey-info-card card mb-4 bg-light">
+                      <div class="card-body py-3">
+                        <div class="d-flex justify-content-between align-items-center">
+                          <div class="journey-point">
+                            <div class="fw-bold">{{ bus.route.origin }}</div>
+                            <div class="text-muted small">{{ bus.departure_time|time:"g:i A" }}</div>
+                          </div>
+                          
+                          <div class="journey-arrow">
+                            <i class="bi bi-arrow-right-circle-fill text-primary"></i>
+                            <div class="text-center mt-1">{{ booking_date|date:"D, d M Y" }}</div>
+                          </div>
+                          
+                          <div class="journey-point text-end">
+                            <div class="fw-bold">{{ bus.route.destination }}</div>
+                            <div class="text-muted small">{% if bus.arrival_time %}{{ bus.arrival_time|time:"g:i A" }}{% else %}N/A{% endif %}</div>
+                          </div>
+                        </div>
+                        
+                        {% if bus.duration or bus.distance %}
+                          <div class="journey-stats d-flex justify-content-center mt-3">
+                            {% if bus.duration %}
+                              <div class="stat-item mx-3">
+                                <i class="bi bi-hourglass-split text-primary me-1"></i>
+                                <span>{{ bus.duration }}</span>
+                              </div>
+                            {% endif %}
+                            
+                            {% if bus.distance %}
+                              <div class="stat-item mx-3">
+                                <i class="bi bi-signpost-2 text-primary me-1"></i>
+                                <span>{{ bus.distance }} km</span>
+                              </div>
+                            {% endif %}
+                          </div>
+                        {% endif %}
+                      </div>
+                    </div>
+
+                    <!-- Booking Summary -->
+                    <div class="booking-summary d-flex justify-content-between align-items-center mb-4">
+                      <div>
+                        <span class="fw-bold">Bus:</span> {{ bus.bus_type }} | 
+                        <span class="fw-bold">Price:</span> Rs {{ bus.price }}/seat
+                      </div>
+                      <div class="price-summary">
+                        <span class="fw-bold me-2">Total:</span>
+                        <span class="total-price text-primary fw-bold">0</span>
+                      </div>
+                    </div>
+
+                    <!-- Seat Legend -->
+                    <div class="seat-legend d-flex justify-content-around align-items-center mb-4">
+                      <div class="legend-item d-flex align-items-center">
+                        <div class="legend-box available"></div>
+                        <span>Available</span>
+                      </div>
+                      <div class="legend-item d-flex align-items-center">
+                        <div class="legend-box selected"></div>
+                        <span>Selected</span>
+                      </div>
+                      <div class="legend-item d-flex align-items-center">
+                        <div class="legend-box booked"></div>
+                        <span>Booked</span>
+                      </div>
+                    </div>
+
+                    <hr>
+
+                    <!-- Bus Layout -->
+                    <div class="bus-layout-container">
+                      <div class="bus-front">
+                        <div class="driver-seat">
+                          <i class="bi bi-person-fill"></i>
+                        </div>
+                      </div>
+                      
+                      <div class="bus-layout" data-price="{{ bus.price }}" data-bus-id="{{ bus.id }}">
+                        {% for row in '123456789' %}
+                          <div class="bus-row">
+                            <div class="seat available" data-seat="{{ row }}A">{{ row }}A</div>
+                            <div class="seat available" data-seat="{{ row }}B">{{ row }}B</div>
+                            <div class="aisle"></div>
+                            <div class="seat available" data-seat="{{ row }}C">{{ row }}C</div>
+                            <div class="seat available" data-seat="{{ row }}D">{{ row }}D</div>
+                          </div>
+                        {% endfor %}
+                      </div>
+                      
+                      <div class="bus-back">
+                        <div class="door"></div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                      <i class="bi bi-x-circle me-2"></i> Cancel
+                    </button>
+                    <button type="submit" class="btn btn-primary">
+                      <i class="bi bi-check-circle me-2"></i> Confirm Booking
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    {% elif booking_date %}
+      <div class="no-buses-alert card border-warning bg-warning bg-opacity-10">
+        <div class="card-body">
+          <div class="d-flex align-items-start">
+            <div class="alert-icon me-3">
+              <i class="bi bi-exclamation-triangle-fill text-warning fs-1"></i>
+            </div>
+            <div>
+              <h5 class="card-title fw-bold">No buses available</h5>
+              <p class="card-text mb-0">
+                {% if booking_date_obj < current_date %}
+                  Cannot book for past dates. Please select today or a future date.
+                {% elif booking_date_obj == current_date %}
+                  <strong>Current time:</strong> {{ current_time_pk }} (PKT)<br>
+                  All buses for today have already departed. Please select a future date or check back tomorrow.
+                {% else %}
+                  No buses found for this route on {{ booking_date|date:"M d, Y" }}.
+                {% endif %}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    {% endif %}
+  </div>
+</div>
+
+<!-- Styles -->
+<style>
+  /* Main container styling */
+  .booking-container {
+    padding: 2rem 0;
+    background: linear-gradient(to bottom, #f8f9fa, #ffffff);
+    min-height: 100vh;
+  }
+
+  .booking-header h1 {
+    color: #0d6efd;
+  }
+
+  .icon-bus {
+    font-size: 1.2em;
+  }
+
+  /* Search form styling */
+  .search-form-card {
+    border-radius: 12px;
+    border: none;
+    transition: all 0.3s ease;
+  }
+
+  .search-form-card:hover {
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important;
+  }
+
+  .search-btn {
+    padding: 0.6rem 1rem;
+    font-weight: 500;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+  }
+
+  .search-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(13, 110, 253, 0.3);
+  }
+
+  /* Custom dropdown styling */
+  .custom-dropdown .dropdown-menu {
+    padding: 0;
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    border: none;
+  }
+
+  .dropdown-search-container {
+    padding: 0.75rem;
+    border-bottom: 1px solid #eee;
+  }
+
+  .dropdown-options-container {
+    max-height: 200px;
+    overflow-y: auto;
+  }
+
+  .dropdown-item {
+    padding: 0.5rem 1rem;
+    transition: all 0.2s ease;
+  }
+
+  .dropdown-item:hover {
+    background-color: #f8f9fa;
+    padding-left: 1.25rem;
+  }
+
+  .dropdown-item.active {
+    background-color: #0d6efd;
+    color: white;
+  }
+
+  .dropdown-item.disabled {
+    color: #6c757d;
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
+
+  /* Date input styling */
+  .date-input-group {
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  .date-input-group .form-control {
+    border-right: none;
+  }
+
+  .date-input-group .input-group-text {
+    background-color: #f8f9fa;
+    border-left: none;
+  }
+
+  /* Bus card styling */
+  .bus-card {
+    border-radius: 12px;
+    border: none;
+    overflow: hidden;
+    transition: all 0.3s ease;
+  }
+
+  .bus-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1) !important;
+  }
+
+  .route-info {
+    position: relative;
+  }
+
+  .route-line {
+    position: relative;
+    height: 30px;
+    display: flex;
+    align-items: center;
+  }
+
+  .route-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: #0d6efd;
+    position: relative;
+    z-index: 2;
+  }
+
+  .route-dash {
+    flex-grow: 1;
+    height: 2px;
+    background-color: #0d6efd;
+    position: relative;
+    top: -1px;
+  }
+
+  .price-display {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #0d6efd;
+  }
+
+  .price-display .currency {
+    font-size: 1rem;
+    margin-right: 0.2rem;
+  }
+
+  .book-btn {
+    border-radius: 8px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+  }
+
+  .book-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(13, 110, 253, 0.3);
+  }
+
+  /* Bus details badges */
+  .bus-details {
+    margin-top: 0.5rem;
+  }
+
+  .bus-details .badge {
+    font-size: 0.85rem;
+    padding: 0.4rem 0.8rem;
+    border-radius: 6px;
+  }
+
+  /* Modal styling */
+  .modal-content {
+    border-radius: 12px;
+    border: none;
+    overflow: hidden;
+  }
+
+  .journey-info-card {
+    border-radius: 8px;
+    border: none;
+  }
+
+  .journey-arrow {
+    text-align: center;
+  }
+
+  .journey-arrow i {
+    font-size: 1.5rem;
+  }
+
+  /* Journey stats in modal */
+  .journey-stats {
+    color: #6c757d;
+    font-size: 0.9rem;
+  }
+
+  .stat-item {
+    display: flex;
+    align-items: center;
+    padding: 0.25rem 0.75rem;
+    background-color: rgba(13, 110, 253, 0.1);
+    border-radius: 20px;
+  }
+
+  /* Bus layout styling */
+  .bus-layout-container {
+    position: relative;
+    margin: 1.5rem 0;
+    padding: 1rem;
+    background-color: #f8f9fa;
+    border-radius: 12px;
+  }
+
+  .bus-front, .bus-back {
+    text-align: center;
+    margin: 0.5rem 0;
+  }
+
+  .driver-seat {
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+    background-color: #6c757d;
+    color: white;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .door {
+    display: inline-block;
+    width: 60px;
+    height: 5px;
+    background-color: #6c757d;
+    border-radius: 3px;
+  }
+
+  .bus-layout {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    user-select: none;
+  }
+
+  .bus-row {
+    display: flex;
+    justify-content: center;
+    margin: 8px 0;
+  }
+
+  .aisle {
+    width: 30px;
+  }
+
+  .seat {
+    width: 45px;
+    height: 45px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    border: 1.5px solid #dee2e6;
+    margin: 4px;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    user-select: none;
+  }
+
+  .seat.available {
+    background-color: #f8f9fa;
+    color: #495057;
+  }
+
+  .seat.available:hover, .seat.available:focus {
+    background-color: #e9ecef;
+    outline: none;
+    box-shadow: 0 0 8px rgba(13, 110, 253, 0.3);
+    transform: scale(1.05);
+  }
+
+  .seat.selected {
+    background-color: #0d6efd;
+    color: white;
+    border-color: #0a58ca;
+    box-shadow: 0 0 10px rgba(13, 110, 253, 0.5);
+    transform: scale(1.05);
+  }
+
+  .seat.booked {
+    background-color: #28a745;
+    color: white;
+    cursor: not-allowed;
+    opacity: 0.8;
+  }
+
+  /* Seat legend */
+  .seat-legend {
+    padding: 0.75rem;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+  }
+
+  .legend-item {
+    font-size: 14px;
+    color: #495057;
+  }
+
+  .legend-box {
+    width: 24px;
+    height: 24px;
+    border-radius: 6px;
+    margin-right: 8px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+  }
+
+  .legend-box.available {
+    background-color: #f8f9fa;
+    border: 1.5px solid #dee2e6;
+  }
+
+  .legend-box.selected {
+    background-color: #0d6efd;
+  }
+
+  .legend-box.booked {
+    background-color: #28a745;
+  }
+
+  /* No buses alert */
+  .no-buses-alert {
+    border-radius: 12px;
+  }
+
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .booking-header h1 {
+      font-size: 1.8rem;
+    }
+    
+    .route-info {
+      flex-direction: column;
+    }
+    
+    .route-path {
+      margin: 1rem 0 !important;
+      width: 100%;
+    }
+    
+    .seat {
+      width: 38px;
+      height: 38px;
+      font-size: 12px;
+      margin: 2px;
+    }
+    
+    .aisle {
+      width: 20px;
+    }
+    
+    .journey-stats {
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    
+    .stat-item {
+      width: 100%;
+      justify-content: center;
+    }
+  }
+
+  @media (max-width: 576px) {
+    .seat {
+      width: 32px;
+      height: 32px;
+      font-size: 11px;
+      margin: 1px;
+    }
+    
+    .aisle {
+      width: 15px;
+    }
+    
+    .legend-box {
+      width: 20px;
+      height: 20px;
+    }
+    
+    .bus-details .badge {
+      font-size: 0.75rem;
+      padding: 0.3rem 0.6rem;
+    }
+  }
+
+  /* Animation for hover effects */
+  .hover-shadow {
+    transition: all 0.3s ease;
+  }
+
+  .hover-shadow:hover {
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important;
+  }
+
+  /* Alert styling */
+  .alert {
+    border-radius: 8px;
+    border: none;
+  }
+
+  .alert-icon {
+    font-size: 1.25rem;
+    font-weight: bold;
+  }
+</style>
+
+<!-- Bootstrap Icons -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+
+<!-- Script -->
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  // --- Dropdown Search Filter and Selection Logic ---
+  const originInputHidden = document.getElementById("origin");
+  const destinationInputHidden = document.getElementById("destination");
+  const originDropdownButton = document.getElementById("originDropdown");
+  const destinationDropdownButton = document.getElementById("destinationDropdown");
+  const originSearchInput = document.getElementById("originSearchInput");
+  const destinationSearchInput = document.getElementById("destinationSearchInput");
+  const originOptionsContainer = document.querySelector(".origin-options");
+  const destinationOptionsContainer = document.querySelector(".destination-options");
+
+  let selectedOrigin = originInputHidden.value;
+  let selectedDestination = destinationInputHidden.value;
+
+  function updateDropdownButtonText(button, value) {
+    const textSpan = button.querySelector(".dropdown-text");
+    if (value) {
+      textSpan.textContent = value;
+    } else {
+      textSpan.textContent = button.id.includes("origin") ? "-- Select Origin --" : "-- Select Destination --";
+    }
+  }
+
+  // Initialize button text
+  updateDropdownButtonText(originDropdownButton, selectedOrigin);
+  updateDropdownButtonText(destinationDropdownButton, selectedDestination);
+
+  // Filter function for dropdowns
+  function filterDropdownItems(searchInput, optionsContainer, currentSelectedOrigin, currentSelectedDestination) {
+    const filter = searchInput.value.toLowerCase();
+    Array.from(optionsContainer.children).forEach(li => {
+      const item = li.querySelector(".dropdown-item");
+      if (item) {
+        const text = item.textContent.toLowerCase();
+        const value = item.dataset.value;
+        if (text.includes(filter)) {
+          li.style.display = "";
+          // Disable if it's the selected value of the other dropdown
+          if (optionsContainer === destinationOptionsContainer) {
+            if (value === currentSelectedOrigin) {
+              item.classList.add("disabled");
+            } else {
+              item.classList.remove("disabled");
+            }
+          } else if (optionsContainer === originOptionsContainer) {
+            if (value === currentSelectedDestination) {
+              item.classList.add("disabled");
+            } else {
+              item.classList.remove("disabled");
+            }
+          }
+        } else {
+          li.style.display = "none";
+        }
+      }
+    });
+  }
+
+  // Handle selection for origin
+  originOptionsContainer.addEventListener("click", function(event) {
+    const item = event.target.closest(".dropdown-item");
+    if (item && !item.classList.contains("disabled")) {
+      selectedOrigin = item.dataset.value;
+      originInputHidden.value = selectedOrigin;
+      updateDropdownButtonText(originDropdownButton, selectedOrigin);
+
+      // Remove active class from previous
+      originOptionsContainer.querySelectorAll(".dropdown-item.active").forEach(el => el.classList.remove("active"));
+      item.classList.add("active");
+
+      // Close the dropdown
+      bootstrap.Dropdown.getInstance(originDropdownButton).hide();
+
+      // Re-filter and disable destination options
+      filterDropdownItems(destinationSearchInput, destinationOptionsContainer, selectedOrigin, selectedDestination);
+      // If selected destination is now the origin, clear destination
+      if (selectedDestination === selectedOrigin) {
+        selectedDestination = "";
+        destinationInputHidden.value = "";
+        updateDropdownButtonText(destinationDropdownButton, "");
+        destinationOptionsContainer.querySelectorAll(".dropdown-item.active").forEach(el => el.classList.remove("active"));
+        // Re-filter destination after clearing
+        filterDropdownItems(destinationSearchInput, destinationOptionsContainer, selectedOrigin, selectedDestination);
+      }
+    }
+  });
+
+  // Handle selection for destination
+  destinationOptionsContainer.addEventListener("click", function(event) {
+    const item = event.target.closest(".dropdown-item");
+    if (item && !item.classList.contains("disabled")) {
+      selectedDestination = item.dataset.value;
+      destinationInputHidden.value = selectedDestination;
+      updateDropdownButtonText(destinationDropdownButton, selectedDestination);
+
+      // Remove active class from previous
+      destinationOptionsContainer.querySelectorAll(".dropdown-item.active").forEach(el => el.classList.remove("active"));
+      item.classList.add("active");
+
+      // Close the dropdown
+      bootstrap.Dropdown.getInstance(destinationDropdownButton).hide();
+
+      // Re-filter and disable origin options
+      filterDropdownItems(originSearchInput, originOptionsContainer, selectedOrigin, selectedDestination);
+      // If selected origin is now the destination, clear origin
+      if (selectedOrigin === selectedDestination) {
+        selectedOrigin = "";
+        originInputHidden.value = "";
+        updateDropdownButtonText(originDropdownButton, "");
+        originOptionsContainer.querySelectorAll(".dropdown-item.active").forEach(el => el.classList.remove("active"));
+        // Re-filter origin after clearing
+        filterDropdownItems(originSearchInput, originOptionsContainer, selectedOrigin, selectedDestination);
+      }
+    }
+  });
+
+  // Search input listeners
+  originSearchInput.addEventListener("keyup", function() {
+    filterDropdownItems(this, originOptionsContainer, selectedOrigin, selectedDestination);
+  });
+  destinationSearchInput.addEventListener("keyup", function() {
+    filterDropdownItems(this, destinationOptionsContainer, selectedOrigin, selectedDestination);
+  });
+
+  // Prevent dropdown from closing when clicking inside search input
+  originSearchInput.addEventListener("click", function(e) { e.stopPropagation(); });
+  destinationSearchInput.addEventListener("click", function(e) { e.stopPropagation(); });
+
+  // Initial filtering based on current selections
+  filterDropdownItems(originSearchInput, originOptionsContainer, selectedOrigin, selectedDestination);
+  filterDropdownItems(destinationSearchInput, destinationOptionsContainer, selectedOrigin, selectedDestination);
+
+  // --- Seat Selection Logic ---
+  // Ensure bookedSeatsData is parsed as JSON if passed as a string
+  const bookedSeatsData = JSON.parse('{{ booked_seats|escapejs }}');
+
+  document.querySelectorAll(".modal").forEach(modal => {
+    let busLayout = modal.querySelector(".bus-layout");
+    let pricePerSeat = parseInt(busLayout.getAttribute("data-price")) || 0;
+    let priceDisplay = modal.querySelector(".total-price");
+    let busId = parseInt(busLayout.getAttribute("data-bus-id"));
+
+    // Mark booked seats
+    if (bookedSeatsData[busId]) {
+      Object.keys(bookedSeatsData[busId]).forEach(seatNumber => {
+        let seatElement = modal.querySelector(`[data-seat="${seatNumber}"]`);
+        if (seatElement) {
+          seatElement.className = "seat booked";
+          seatElement.setAttribute("data-booked-by", bookedSeatsData[busId][seatNumber].user_name);
+          seatElement.setAttribute("title", `Booked by ${bookedSeatsData[busId][seatNumber].user_name}`);
+        }
+      });
+    }
+
+    modal.querySelectorAll(".seat").forEach(seat => {
+      seat.addEventListener("click", function() {
+        if (this.classList.contains("booked")) {
+          let bookedBy = this.getAttribute("data-booked-by") || "someone";
+          
+          // Create a custom notification instead of alert
+          const notification = document.createElement('div');
+          notification.className = 'seat-notification position-fixed top-0 start-50 translate-middle-x mt-3 alert alert-warning alert-dismissible fade show';
+          notification.style.zIndex = '9999';
+          notification.innerHTML = `
+            <div class="d-flex align-items-center">
+              <i class="bi bi-exclamation-triangle-fill me-2"></i>
+              <div>This seat is already booked by ${bookedBy}. Please select a different seat.</div>
+            </div>
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+          `;
+          document.body.appendChild(notification);
+          
+          // Auto remove after 3 seconds
+          setTimeout(() => {
+            notification.classList.remove('show');
+            setTimeout(() => notification.remove(), 300);
+          }, 3000);
+          
+          return;
+        }
+        if (this.classList.contains("available")) {
+          this.className = "seat selected";
+        } else if (this.classList.contains("selected")) {
+          this.className = "seat available";
+        }
+        let selectedSeats = modal.querySelectorAll(".seat.selected");
+        let total = selectedSeats.length * pricePerSeat;
+        priceDisplay.textContent = total;
+      });
+    });
+
+    let form = modal.querySelector("form");
+    form.addEventListener("submit", function(e) {
+      let selectedSeats = Array.from(modal.querySelectorAll(".seat.selected")).map(s => s.dataset.seat);
+      if (selectedSeats.length === 0) {
+        e.preventDefault();
+        
+        // Create a custom notification instead of alert
+        const notification = document.createElement('div');
+        notification.className = 'seat-notification position-fixed top-0 start-50 translate-middle-x mt-3 alert alert-danger alert-dismissible fade show';
+        notification.style.zIndex = '9999';
+        notification.innerHTML = `
+          <div class="d-flex align-items-center">
+            <i class="bi bi-exclamation-circle-fill me-2"></i>
+            <div>Please select at least one seat!</div>
+          </div>
+          <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        `;
+        document.body.appendChild(notification);
+        
+        // Auto remove after 3 seconds
+        setTimeout(() => {
+          notification.classList.remove('show');
+          setTimeout(() => notification.remove(), 300);
+        }, 3000);
+        
+        return;
+      }
+      this.querySelector(".seat-number-input").value = selectedSeats.join(",");
+    });
+  });
+});
+</script>
+{% endblock %}

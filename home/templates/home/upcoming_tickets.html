@@ -1,0 +1,311 @@
+{% extends "home/base.html" %}
+{% load static %}
+
+{% block title %}Upcoming Tickets{% endblock %}
+
+{% block content %}
+<div class="tickets-container">
+  <div class="container py-5">
+    <!-- Header -->
+    <div class="tickets-header mb-5">
+      <div class="d-flex justify-content-between align-items-center">
+        <div>
+          <h1 class="tickets-title">Upcoming Tickets</h1>
+          <p class="tickets-subtitle text-muted">Manage your upcoming journeys</p>
+        </div>
+        <div class="header-actions"></div>
+      </div>
+    </div>
+
+    <!-- Messages -->
+    {% if messages %}
+      <div class="messages-container mb-4">
+        {% for message in messages %}
+          <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+            <div class="d-flex align-items-center">
+              <span class="alert-icon me-2">
+                {% if message.tags == 'success' %}✓{% elif message.tags == 'error' %}✗{% elif message.tags == 'warning' %}⚠️{% else %}ℹ️{% endif %}
+              </span>
+              <div>{{ message }}</div>
+            </div>
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    <!-- Tickets -->
+    {% if tickets %}
+      <div class="tickets-list">
+        {% for ticket in tickets %}
+          <div class="ticket-card card border-0 shadow-sm mb-4">
+            <div class="card-body">
+              <div class="row align-items-center">
+                <div class="col-md-8">
+                  <div class="ticket-route mb-3">
+                    <div class="d-flex align-items-center">
+                      <div class="route-station">
+                        <div class="station-name">{{ ticket.bus.route.origin }}</div>
+                        <div class="station-time">{{ ticket.booking_date|date:"M d, Y" }} at {{ ticket.bus.departure_time|time:"g:i A" }}</div>
+                      </div>
+                      
+                      <div class="route-path mx-3 flex-grow-1">
+                        <div class="route-line">
+                          <div class="route-dot start"></div>
+                          <div class="route-dash"></div>
+                          <div class="route-dot end"></div>
+                        </div>
+                      </div>
+                      
+                      <div class="route-station text-end">
+                        <div class="station-name">{{ ticket.bus.route.destination }}</div>
+                        <div class="station-time">
+                          {% if ticket.bus.arrival_time %}
+                            {{ ticket.booking_date|date:"M d, Y" }} at {{ ticket.bus.arrival_time|time:"g:i A" }}
+                          {% else %}
+                            Arrival time N/A
+                          {% endif %}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div class="ticket-details">
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="detail-item">
+                          <span class="detail-label">Bus Type:</span>
+                          <span class="detail-value">{{ ticket.bus.bus_type }}</span>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="detail-item">
+                          <span class="detail-label">Seat Number:</span>
+                          <span class="detail-value">{{ ticket.seat_number }}</span>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="detail-item">
+                          <span class="detail-label">Booking Number:</span>
+                          <span class="detail-value">{{ ticket.booking_number }}</span>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="detail-item">
+                          <span class="detail-label">Status:</span>
+                          <span class="detail-value">
+                            {% with payment=ticket.payments.last %}
+                              {% if payment %}
+                                {% if payment.status == 'completed' %}
+                                  <span class="badge bg-success">Paid</span>
+                                {% elif payment.status == 'pending' %}
+                                  <span class="badge bg-warning">Pending</span>
+                                {% elif payment.status == 'failed' %}
+                                  <span class="badge bg-danger">Failed</span>
+                                {% elif payment.status == 'refunded' %}
+                                  <span class="badge bg-info">Refunded</span>
+                                {% else %}
+                                  <span class="badge bg-secondary">{{ payment.status|title }}</span>
+                                {% endif %}
+                              {% else %}
+                                <span class="badge bg-secondary">Unpaid</span>
+                              {% endif %}
+                            {% endwith %}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+                <div class="col-md-4 text-end">
+                  <div class="ticket-price mb-3">
+                    <div class="price-label">Total Price</div>
+                    <div class="price-amount">Rs {{ ticket.total_price }}</div>
+                  </div>
+                  
+                  <div class="ticket-actions">
+                    <!-- Pay Button -->
+                    <a href="{% url 'add_payment' ticket.id %}" class="btn btn-success btn-sm me-2">
+                      <i class="bi bi-credit-card me-1"></i> Pay
+                    </a>
+
+                    <!-- Cancel Button -->
+                    <form action="{% url 'cancel_ticket' ticket.id %}" method="post" class="d-inline" onsubmit="return confirmCancel();">
+                      {% csrf_token %}
+                      <button type="submit" class="btn btn-danger btn-sm">
+                        <i class="bi bi-x-circle me-1"></i> Cancel
+                      </button>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <div class="empty-state">
+        <div class="empty-state-icon">
+          <i class="bi bi-calendar-x"></i>
+        </div>
+        <h3 class="empty-state-title">No Upcoming Tickets</h3>
+        <p class="empty-state-description">You don't have any upcoming tickets. Book your journey now!</p>
+        <a href="{% url 'booking' %}" class="btn btn-primary mt-3">
+          <i class="bi bi-plus-circle me-2"></i> Book New Ticket
+        </a>
+      </div>
+    {% endif %}
+  </div>
+</div>
+
+<!-- Styles -->
+<style>
+  .tickets-container {
+    background: linear-gradient(135deg, #f5f7fa 0%, #e4eff9 100%);
+    min-height: 100vh;
+  }
+
+  .tickets-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #0d6efd;
+    margin-bottom: 0.5rem;
+  }
+
+  .tickets-subtitle {
+    font-size: 1.1rem;
+  }
+
+  .ticket-card {
+    border-radius: 12px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+  }
+
+  .ticket-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1) !important;
+  }
+
+  .station-name {
+    font-weight: 600;
+    font-size: 1.1rem;
+    color: #212529;
+  }
+
+  .station-time {
+    font-size: 0.9rem;
+    color: #6c757d;
+  }
+
+  .route-line {
+    position: relative;
+    height: 30px;
+    display: flex;
+    align-items: center;
+  }
+
+  .route-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: #0d6efd;
+    position: relative;
+    z-index: 2;
+  }
+
+  .route-dash {
+    flex-grow: 1;
+    height: 2px;
+    background-color: #0d6efd;
+    position: relative;
+    top: -1px;
+  }
+
+  .detail-item {
+    margin-bottom: 0.75rem;
+  }
+
+  .detail-label {
+    font-weight: 500;
+    color: #6c757d;
+    margin-right: 0.5rem;
+  }
+
+  .detail-value {
+    font-weight: 500;
+    color: #212529;
+  }
+
+  .price-label {
+    font-size: 0.9rem;
+    color: #6c757d;
+  }
+
+  .price-amount {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #0d6efd;
+  }
+
+  .empty-state {
+    text-align: center;
+    padding: 3rem 0;
+  }
+
+  .empty-state-icon {
+    font-size: 4rem;
+    color: #adb5bd;
+    margin-bottom: 1rem;
+  }
+
+  .empty-state-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #212529;
+    margin-bottom: 0.5rem;
+  }
+
+  .empty-state-description {
+    color: #6c757d;
+    max-width: 500px;
+    margin: 0 auto;
+  }
+
+  .alert {
+    border-radius: 8px;
+    border: none;
+  }
+
+  .alert-icon {
+    font-size: 1.25rem;
+    font-weight: bold;
+  }
+
+  @media (max-width: 768px) {
+    .tickets-title {
+      font-size: 1.5rem;
+    }
+    .ticket-route {
+      flex-direction: column;
+    }
+    .route-path {
+      margin: 1rem 0 !important;
+      width: 100%;
+    }
+    .ticket-actions {
+      margin-top: 1rem;
+      text-align: start !important;
+    }
+  }
+</style>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+
+<script>
+function confirmCancel() {
+  return confirm("Are you sure you want to cancel this ticket? This action cannot be undone.");
+}
+</script>
+{% endblock %}

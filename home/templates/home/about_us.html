@@ -1,0 +1,91 @@
+{% extends 'home/base.html' %}
+{% load static %}
+
+{% block content %}
+
+  <title>About Us - Daewoo</title>
+  <style>
+    body {
+      font-family: Inter, system-ui, sans-serif;
+      margin: 0;
+      background: #f7f8fb;
+      color: #222;
+    }
+    .page {
+      max-width: 1100px;
+      margin: 32px auto;
+      padding: 20px;
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 6px 20px rgba(16,24,40,0.06);
+    }
+    h1 {
+      text-align: center;
+      font-size: 2rem;
+      color: #003366;
+      margin-bottom: 30px;
+    }
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      align-items: center;
+      margin-bottom: 30px;
+    }
+    .about-image img {
+      width: 100%;
+      border-radius: 10px;
+      display: block;
+    }
+    .about-text {
+      font-size: 1rem;
+      line-height: 1.6;
+      color: #444;
+    }
+    .extra-text {
+      font-size: 1rem;
+      line-height: 1.7;
+      color: #333;
+      margin-top: 20px;
+    }
+    @media (max-width: 800px) {
+      .about-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <h1>About Us</h1>
+    <div class="about-grid">
+      <div class="about-image">
+        <img src="{% static 'home/about-us.jpeg' %}" alt="Daewoo Express">
+      </div>
+      <div class="about-text">
+        <p>
+          Daewoo Express is the first and the biggest foreign investment company with an advanced and organized transport system in Pakistan.  
+          It is the only transport company to have a nationwide network with various international trade links.  
+        </p>
+        <p>
+          Being a transport service provider, the company owns a large fleet of buses, technically advanced workshops to maintain the fleet for passenger safety, state-of-the-art terminals, and training institutes for drivers and mechanical staff.  
+        </p>
+        <p>
+          Daewoo Express has been rendering transport facilities since its inception in 1997 to the people of Pakistan.
+        </p>
+      </div>
+    </div>
+
+    <div class="extra-text">
+      <p>
+        It is appreciated by the masses as well as by the Governments of Pakistan and Korea for its consistent success.  
+        Media of both countries often express appreciation for the revolutionary accomplishment of the company in the transport sector, through various channels.  
+      </p>
+      <p>
+        Daewoo Express has been providing world-class services since 1997, earning trust, recognition, and respect from millions of passengers across Pakistan.  
+      </p>
+    </div>
+  </div>
+</body>
+
+{% endblock %}

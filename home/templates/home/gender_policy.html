@@ -1,0 +1,116 @@
+{% extends "home/base.html" %}
+{% load static %}
+
+{% block title %}In-Journey Attractions - Daewoo{% endblock %}
+
+{% block content %}
+
+  <title>Gender Equality Policy - Daewoo</title>
+  <style>
+    body {
+      font-family: "Segoe UI", Arial, sans-serif;
+      background: #f9f9fc;
+      margin: 0;
+      color: #333;
+    }
+    .page {
+      max-width: 1100px;
+      margin: 40px auto;
+      padding: 20px;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+    }
+    h1 {
+      text-align: center;
+      color: #800080;
+      font-size: 2.4rem;
+      margin-bottom: 20px;
+    }
+    .intro {
+      color: #555;
+      font-size: 1.1rem;
+      line-height: 1.6;
+      margin-bottom: 15px;
+    }
+    .section {
+      display: flex;
+      align-items: flex-start;
+      gap: 20px;
+      margin-bottom: 40px;
+    }
+    .section img {
+      width: 55%;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    .text-box {
+      width: 52%;
+    }
+    ul.policy {
+      list-style: none;
+      padding: 0;
+    }
+    ul.policy li {
+      background: #fef0ff;
+      margin: 8px 0;
+      padding: 12px 16px;
+      border-radius: 8px;
+      font-size: 1rem;
+      line-height: 1.5;
+      transition: transform 0.2s;
+    }
+    ul.policy li:hover {
+      transform: translateX(5px);
+      background: #f9dbff;
+    }
+    .big-img {
+      width: 55% !important; /* slightly bigger bottom image */
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <h1>Gender Equality Policy</h1>
+
+    <!-- Top Section: Left Image + Right Text/Intro + 7 Points -->
+    <div class="section">
+      <img src="{% static 'home/gender-equality1.jpeg' %}" alt="Gender Equality">
+      <div class="text-box">
+        <p class="intro">
+          Daewoo is committed to promoting equality, diversity, and inclusion at every level 
+          of the organization. We believe in building a workplace where everyone has equal 
+          opportunities to succeed, regardless of gender.
+        </p>
+        <ul class="policy">
+          <li>1. Ensure equal employment opportunities for all genders.</li>
+          <li>2. Promote a workplace free from discrimination and harassment.</li>
+          <li>3. Support women in leadership and decision-making roles.</li>
+          <li>4. Provide equal pay for equal work regardless of gender.</li>
+          <li>5. Encourage gender balance in recruitment and promotions.</li>
+          <li>6. Offer training programs to challenge gender stereotypes.</li>
+          <li>7. Provide maternity, paternity, and parental leave benefits.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Bottom Section: Left Text (remaining points) + Right Bigger Image -->
+    <div class="section">
+      <div class="text-box">
+        <ul class="policy">
+          <li>8. Establish policies to prevent workplace harassment.</li>
+          <li>9. Create mentorship programs for women employees.</li>
+          <li>10. Ensure flexible working options to support work-life balance.</li>
+          <li>11. Conduct regular gender equality awareness sessions.</li>
+          <li>12. Encourage reporting of discrimination without fear of reprisal.</li>
+          <li>13. Promote safe and inclusive transport services for women passengers.</li>
+          <li>14. Monitor and publish gender equality performance indicators.</li>
+          <li>15. Continuously improve policies to close gender gaps.</li>
+        </ul>
+      </div>
+      <img class="big-img" src="{% static 'home/gender-equality2.jpeg' %}" alt="Equality Support">
+    </div>
+  </div>
+</body>
+
+{% endblock %}

@@ -1,0 +1,511 @@
+{% extends 'home/base.html' %}
+{% load static %}
+
+{% block content %}
+
+  <title>Daewoo Express Terminals</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet" />
+  <style>
+    body { background-color: #f8f9fa; }
+    h2.main-title {
+      font-weight: 900; font-size: 3rem; letter-spacing: 0.1em;
+      color: #0d6efd; text-transform: uppercase;
+      margin-bottom: 0.25em;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    p.subtitle {
+      font-size: 1.25rem; color: #6c757d;
+      letter-spacing: 0.05em; margin-bottom: 2rem;
+    }
+    .terminal-card {
+      position: relative; background: white;
+      border-radius: 12px; overflow: hidden;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      transition: transform 0.3s; cursor: pointer;
+      display: flex; flex-direction: column; height: 100%;
+    }
+    .terminal-card:hover { transform: translateY(-5px); }
+    .terminal-card img {
+      width: 100%; height: 220px; object-fit: cover;
+      border-radius: 12px 12px 0 0; transition: transform 0.3s;
+    }
+    .terminal-card:hover img { transform: scale(1.05); }
+    .terminal-city-name {
+      font-weight: 900; color: #000; text-transform: uppercase;
+      font-size: 1.1rem; padding: 0.75rem 1rem;
+      text-align: center; flex-shrink: 0;
+    }
+    .overlay {
+      position: absolute; top:0; left:0; right:0; bottom:0;
+      background-color: rgba(0,123,255,0.6);
+      opacity: 0; transition: opacity 0.3s ease;
+      border-radius: 12px 12px 0 0;
+      display:flex; flex-direction:column;
+      justify-content:center; align-items:center;
+      padding:1rem; color:#fff; text-align:center;
+      pointer-events:none;
+    }
+    .terminal-card:hover .overlay { opacity:1; pointer-events:auto; }
+    .overlay p { margin:0.2rem 0; font-size:0.9rem; }
+    .overlay p i { margin-right:0.5rem; }
+  </style>
+</head>
+<body>
+
+  <!-- Main Terminals -->
+  <div class="container text-center my-5">
+    <h2 class="main-title">Daewoo Terminals</h2>
+    <p class="subtitle">Find Daewoo Express main terminals across Pakistan</p>
+  </div>
+
+  <div class="container">
+    <div class="row g-4">
+      <!-- Example terminal -->
+      <div class="col-md-3 col-sm-6 d-flex">
+        <div class="terminal-card w-100">
+          <div class="terminal-city-name">LAHORE THOKAR</div>
+          <img src="{% static 'home/lahore.jpg' %}" alt="Lahore" />
+          <div class="overlay">
+            <p><strong>Address:</strong> Tokhar Niaz Baig between Multan Road & Mohlanwal Road</p>
+            <p><i class="bi bi-telephone-fill"></i>042-37498515</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Rawalpindi -->
+          <div class="col-md-3 col-sm-6 d-flex">
+            <div class="terminal-card w-100">
+              <div class="terminal-city-name">Rawalpindi</div>
+              <img src="{% static 'home/rawalpindi.jpg' %}" alt="Rawalpindi Terminal" />
+              <div class="overlay">
+                <p><strong>Address:</strong> Khasra No. 1459/2/2, Village Jhangi Sayyedan, Near EME College</p>
+                <p><i class="bi bi-telephone-fill"></i>051-5466215</p>
+              </div>
+            </div>
+          </div>
+
+      <!-- Karachi -->
+      <div class="col-md-3 col-sm-6 d-flex">
+        <div class="terminal-card w-100">
+          <div class="terminal-city-name">Karachi</div>
+          <img src="{% static 'home/karachi.jpeg' %}" alt="Karachi Terminal" />
+          <div class="overlay">
+            <p><strong>Address:</strong> Scheme# 33, Main Super Highway, Near PSO Petrol Pump, Sohrab Goth, Karachi</p>
+            <p><i class="bi bi-telephone-fill"></i>021-111-007-008</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Islamabad -->
+      <div class="col-md-3 col-sm-6 d-flex">
+        <div class="terminal-card w-100">
+          <div class="terminal-city-name">Islamabad</div>
+          <img src="{% static 'home/islamabad.jpeg' %}" alt="Islamabad Terminal" />
+          <div class="overlay">
+            <p><strong>Address:</strong> Faizabad, Islamabad</p>
+            <p><i class="bi bi-telephone-fill"></i>051-111-007-008</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Multan -->
+      <div class="col-md-3 col-sm-6 d-flex">
+        <div class="terminal-card w-100">
+          <div class="terminal-city-name">Multan</div>
+          <img src="{% static 'home/multan.jpg' %}" alt="Multan Terminal" />
+          <div class="overlay">
+            <p><strong>Address:</strong> Opp. TTC Khanewal Road, Gaddafi Chowk</p>
+            <p><i class="bi bi-telephone-fill"></i>061-6776363</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Faisalabad -->
+      <div class="col-md-3 col-sm-6 d-flex">
+        <div class="terminal-card w-100">
+          <div class="terminal-city-name">Faisalabad</div>
+          <img src="{% static 'home/faisalabad.jpg' %}" alt="Faisalabad Terminal" />
+          <div class="overlay">
+            <p><strong>Address:</strong> Chak No-123 (JB) Mohallah Akbarabad, Punj Pullian Road, Opp. Allied Hospital</p>
+            <p><i class="bi bi-telephone-fill"></i>041-2627460</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Peshawar -->
+      <div class="col-md-3 col-sm-6 d-flex">
+        <div class="terminal-card w-100">
+          <div class="terminal-city-name">Peshawar</div>
+          <img src="{% static 'home/pashawar.jpg' %}" alt="Peshawar Terminal" />
+          <div class="overlay">
+            <p><strong>Address:</strong> Opp G.Bus Stand, GT Road Peshawar City</p>
+            <p><i class="bi bi-telephone-fill"></i>091-2657591-3</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sargodha -->
+      <div class="col-md-3 col-sm-6 d-flex">
+        <div class="terminal-card w-100">
+          <div class="terminal-city-name">Sargodha</div>
+          <img src="{% static 'home/sargodha.jpg' %}" alt="Sargodha Terminal" />
+          <div class="overlay">
+            <p><strong>Address:</strong> Plot No. 149 & 150, Main College Road, Wagon Stand, Chak No. 47 NB, Sargodha Cantt.</p>
+            <p><i class="bi bi-telephone-fill"></i>048-3225930</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Abbottabad -->
+      <div class="col-md-3 col-sm-6 d-flex">
+        <div class="terminal-card w-100">
+          <div class="terminal-city-name">Abbottabad</div>
+          <img src="{% static 'home/abbottabad.jpg' %}" alt="Abbottabad Terminal" />
+          <div class="overlay">
+            <p><strong>Address:</strong> Near Mesile Chowk, Moza Jhangi, Chowk Mandian, Main Mansehra Road, Abt Cantt.</p>
+            <p><i class="bi bi-telephone-fill"></i>0992-384718</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sialkot -->
+      <div class="col-md-3 col-sm-6 d-flex">
+        <div class="terminal-card w-100">
+          <div class="terminal-city-name">Sialkot</div>
+          <img src="{% static 'home/sialkot.jpg' %}" alt="Sialkot Terminal" />
+          <div class="overlay">
+            <p><strong>Address:</strong> Garrison Park near Jail Road, SKT Cantonment opp. GTS.</p>
+            <p><i class="bi bi-telephone-fill"></i>052-4298807</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bahawalpur -->
+      <div class="col-md-3 col-sm-6 d-flex">
+        <div class="terminal-card w-100">
+          <div class="terminal-city-name">Bahawalpur</div>
+          <img src="{% static 'home/bahawalpur.jpg' %}" alt="Bahawalpur Terminal" />
+          <div class="overlay">
+            <p><strong>Address:</strong> Opp. Sadiq Public School, Ahmed Pur Road, Dera Nawab Sahib Road, near NLC.</p>
+            <p><i class="bi bi-telephone-fill"></i>062-2877120</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Hyderabad -->
+      <div class="col-md-3 col-sm-6 d-flex">
+        <div class="terminal-card w-100">
+          <div class="terminal-city-name">Hyderabad</div>
+          <img src="{% static 'home/hyderabad.jpg' %}" alt="Hyderabad Terminal" />
+          <div class="overlay">
+            <p><strong>Address:</strong> Plot # A-21, Block-C, Unit#7, Autoban Road, Latifabad</p>
+            <p><i class="bi bi-telephone-fill"></i>022-3821608</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sahiwal -->
+      <div class="col-md-3 col-sm-6 d-flex">
+        <div class="terminal-card w-100">
+          <div class="terminal-city-name">Sahiwal</div>
+          <img src="{% static 'home/sahiwal.jpg' %}" alt="Sahiwal Terminal" />
+          <div class="overlay">
+            <p><strong>Address:</strong> Daewoo terminal near the Bank of Punjab, Arifwala Chowk, Multan Road Sahiwal</p>
+            <p><i class="bi bi-telephone-fill"></i>040-4501163-64</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sukkur -->
+      <div class="col-md-3 col-sm-6 d-flex">
+        <div class="terminal-card w-100">
+          <div class="terminal-city-name">Sukkur</div>
+          <img src="{% static 'home/sukkur.jpg' %}" alt="Sukkur Terminal" />
+          <div class="overlay">
+            <p><strong>Address:</strong> Plot no.1028 adjacent Edhi Center, Baber Loi Rohri By Pass, NHA Sukkur</p>
+            <p><i class="bi bi-telephone-fill"></i>071-5804375</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Swat -->
+      <div class="col-md-3 col-sm-6 d-flex">
+        <div class="terminal-card w-100">
+          <div class="terminal-city-name">Swat</div>
+          <img src="{% static 'home/swat.jpg' %}" alt="Swat Terminal" />
+          <div class="overlay">
+            <p><strong>Address:</strong> Amankot, GT Road, opp. PSO Pump near GTS, Mingora Swat</p>
+            <p><i class="bi bi-telephone-fill"></i>0946-729105</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dera Ismail Khan -->
+      <div class="col-md-3 col-sm-6 d-flex">
+        <div class="terminal-card w-100">
+          <div class="terminal-city-name">Dera Ismail Khan</div>
+          <img src="{% static 'home/dera.jpg' %}" alt="DI Khan Terminal" />
+          <div class="overlay">
+            <p><strong>Address:</strong> Opp. Khan Plaza, Bannu Road Dera Ismail Khan</p>
+            <p><i class="bi bi-telephone-fill"></i>0966-730941</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Chowk Bahadurpur -->
+      <div class="col-md-3 col-sm-6 d-flex">
+        <div class="terminal-card w-100">
+          <div class="terminal-city-name">Bahadurpur</div>
+          <img src="{% static 'home/bahadupur.jpg' %}" alt="Chowk Bahadurpur Terminal" />
+          <div class="overlay">
+            <p><strong>Address:</strong> Moza Bahadurpur, KLP Road, Distt. RYK, Chowk Bahadurpur</p>
+            <p><i class="bi bi-telephone-fill"></i>068-5614476</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dera Ghazi Khan -->
+      <div class="col-md-3 col-sm-6 d-flex">
+        <div class="terminal-card w-100">
+          <div class="terminal-city-name">Dera Ghazi Khan</div>
+          <img src="{% static 'home/dera-ghazi.jpg' %}" alt="DG Khan Terminal" />
+          <div class="overlay">
+            <p><strong>Address:</strong> Moza Ghadai Shumali, Near New General Bus Stand, Dera Ghazi Khan</p>
+            <p><i class="bi bi-telephone-fill"></i>064-2472481</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sub Terminals Heading -->
+      <div class="container text-center my-5">
+        <h2 class="main-title">Daewoo Sub Terminals</h2>
+        <p class="subtitle">Find Daewoo Express sub terminals across Pakistan</p>
+      </div>
+
+
+      <div class="col-md-3 col-sm-6 d-flex">
+        <div class="terminal-card w-100">
+          <div class="terminal-city-name">GUJRANWALA</div>
+          <img src="{% static 'home/gujranwala.jpg' %}" alt="Gujranwala" />
+          <div class="overlay">
+            <p><strong>Address:</strong> Next to Rescue Office 1122 near Qutab Auto's Ad More Petrol Pump</p>
+            <p><i class="bi bi-telephone-fill"></i>051-3412185</p>
+          </div>
+        </div>
+      </div>
+
+
+      <!-- Gujrat -->
+          <div class="col-md-3 col-sm-6 d-flex">
+             <div class="terminal-card w-100">
+               <div class="terminal-city-name">GUJRAT</div>
+               <img src="{% static 'home/gujrat.jpg' %}" alt="Gujrat Terminal" />
+               <div class="overlay">
+                 <p><strong>Address:</strong> Khasra no. 714, Khatooni no. 665/1208, GT Road Near UBL Bank, Gujrat.</p>
+                 <p><i class="bi bi-telephone-fill"></i>053-3534794-5</p>
+               </div>
+             </div>
+           </div>
+         
+          <div class="col-md-3 col-sm-6 d-flex">
+             <div class="terminal-card w-100">
+               <div class="terminal-city-name">JHANG</div>
+               <img src="{% static 'home/jhang.jpg' %}" alt="Jhang Terminal" />
+               <div class="overlay">
+                 <p><strong>Address:</strong> Safdar Petrolium, Mohallah Islam Nagar, Bhukkar Road, Jhang</p>
+                 <p><i class="bi bi-telephone-fill"></i>0477-627688</p>
+               </div>
+             </div>
+           </div>
+ 
+          <div class="col-md-3 col-sm-6 d-flex">
+             <div class="terminal-card w-100">
+               <div class="terminal-city-name">SADIQABAD</div>
+               <img src="{% static 'home/sadiqabad.jpg' %}" alt="Sadiqabad Terminal" />
+               <div class="overlay">
+                 <p><strong>Address:</strong> KLP Road, Tehsil Sadiqabad, Dist, RYK.</p>
+                 <p><i class="bi bi-telephone-fill"></i>068-5674476</p>
+               </div>
+             </div>
+           </div>
+  
+          <div class="col-md-3 col-sm-6 d-flex">
+             <div class="terminal-card w-100">
+               <div class="terminal-city-name">OKARA CITY</div>
+               <img src="{% static 'home/okara.jpg' %}" alt="Okara Terminal" />
+               <div class="overlay">
+                 <p><strong>Address:</strong> Food Valley Marriage Lawn G. T. Road, Okara</p>
+                 <p><i class="bi bi-telephone-fill"></i>044-2550401-2</p>
+               </div>
+             </div>
+           </div>
+ 
+          <div class="col-md-3 col-sm-6 d-flex">
+             <div class="terminal-card w-100">
+               <div class="terminal-city-name">JHELUM</div>
+               <img src="{% static 'home/jhelum.jpg' %}" alt="Jhelum Terminal" />
+               <div class="overlay">
+                 <p><strong>Address:</strong> Behind Police Welfare Pump, Main G.T Road, Jada, Jhelum.</p>
+                 <p><i class="bi bi-telephone-fill"></i>0544-720935</p>
+               </div>
+             </div>
+           </div>
+ 
+          <div class="col-md-3 col-sm-6 d-flex">
+             <div class="terminal-card w-100">
+               <div class="terminal-city-name">MURREE</div>
+               <img src="{% static 'home/murree.jpg' %}" alt="Murree Terminal" />
+               <div class="overlay">
+                 <p><strong>Address:</strong> Shop No. 14, 21, 22 Cart Road, Cantonment Plaza, Frida Market, Cantt Murree</p>
+                 <p><i class="bi bi-telephone-fill"></i>051-3412185</p>
+               </div>
+             </div>
+           </div>
+          
+          <div class="col-md-3 col-sm-6 d-flex">
+             <div class="terminal-card w-100">
+               <div class="terminal-city-name">KHANEWAL</div>
+               <img src="{% static 'home/khanewal.jpg' %}" alt="Khanewal Terminal" />
+               <div class="overlay">
+                 <p><strong>Address:</strong> Daewoo Express Khanewal, Lahore Morr, Khanewal-Kabirwala Road.</p>
+                 <p><i class="bi bi-telephone-fill"></i>065-2556630</p>
+               </div>
+             </div>
+           </div>
+        
+         <div class="col-md-3 col-sm-6 d-flex">
+             <div class="terminal-card w-100">
+               <div class="terminal-city-name">DASKA</div>
+               <img src="{% static 'home/daska.jpg' %}" alt="Daska Terminal" />
+               <div class="overlay">
+                 <p><strong>Address:</strong> Gujranwala, opposite Star CNG Near Canal Bridge Daska</p>
+                 <p><i class="bi bi-telephone-fill"></i>052-6300155</p>
+               </div>
+             </div>
+           </div>
+         
+        <div class="col-md-3 col-sm-6 d-flex">
+             <div class="terminal-card w-100">
+               <div class="terminal-city-name">MORO</div>
+               <img src="{% static 'home/moro.jpg' %}" alt="Moro Terminal" />
+               <div class="overlay">
+                 <p><strong>Address:</strong> Byco Falak Filling Station, Bypass Road, NHA, Moro.</p>
+                 <p><i class="bi bi-telephone-fill"></i>0242-413085-7</p>
+               </div>
+             </div>
+           </div>
+ <div class="col-md-3 col-sm-6 d-flex">
+             <div class="terminal-card w-100">
+               <div class="terminal-city-name">KHAN PUR</div>
+               <img src="{% static 'home/khan-pur.jpg' %}" alt="Khanpur Terminal" />
+               <div class="overlay">
+                 <p><strong>Address:</strong> Attock Petroleum, Quaid-e-Millat Road, By Pass, Khan Pur</p>
+                 <p><i class="bi bi-telephone-fill"></i>068-5955004-5</p>
+               </div>
+             </div>
+           </div>
+ <div class="col-md-3 col-sm-6 d-flex">
+             <div class="terminal-card w-100">
+               <div class="terminal-city-name">BHAKKAR</div>
+               <img src="{% static 'home/bhakkar.jpg' %}" alt="Bhakkar Terminal" />
+               <div class="overlay">
+                 <p><strong>Address:</strong> Opp. General Bus stand Jhang Road, Chak No.34/B TDA, Tehsil & District Bhakkar</p>
+                 <p><i class="bi bi-telephone-fill"></i>0453-515574</p>
+               </div>
+             </div>
+           </div>
+ <div class="col-md-3 col-sm-6 d-flex">
+             <div class="terminal-card w-100">
+               <div class="terminal-city-name">BATKHELA</div>
+               <img src="{% static 'home/batkhela.jpg' %}" alt="Batkhela Terminal" />
+               <div class="overlay">
+                 <p><strong>Address:</strong> Shahibzada Market, Near Main Haji Baba Chowk, GT Road</p>
+                 <p><i class="bi bi-telephone-fill"></i>0932-415923-4</p>
+               </div>
+             </div>
+           </div>
+ <div class="col-md-3 col-sm-6 d-flex">
+             <div class="terminal-card w-100">
+               <div class="terminal-city-name">HYDERABAD CITY</div>
+               <img src="{% static 'home/hyderabad.jpg' %}" alt="Hyderabad City Terminal" />
+               <div class="overlay">
+                 <p><strong>Address:</strong> —</p>
+                 <p><i class="bi bi-telephone-fill"></i>—</p>
+               </div>
+             </div>
+           </div>
+ <div class="col-md-3 col-sm-6 d-flex">
+             <div class="terminal-card w-100">
+               <div class="terminal-city-name">MUZAFFARGARH</div>
+               <img src="{% static 'home/muzaffargarh.jpg' %}" alt="Muzaffargarh Terminal" />
+               <div class="overlay">
+                 <p><strong>Address:</strong> Dera Ghazi Khan Road, Thal Jute Mills Muzaffargarh</p>
+                 <p><i class="bi bi-telephone-fill"></i>066-2424142</p>
+               </div>
+             </div>
+           </div>
+ <div class="col-md-3 col-sm-6 d-flex">
+             <div class="terminal-card w-100">
+               <div class="terminal-city-name">BHALWAL</div>
+               <img src="{% static 'home/bhalwal.jpg' %}" alt="Bhalwal Terminal" />
+               <div class="overlay">
+                 <p><strong>Address:</strong> Near General Bus Stand, Chak No. 8, North, Bhalwal City Road, Tehsil Bhalwal, Distt. Sargodha</p>
+                 <p><i class="bi bi-telephone-fill"></i>048-6644772</p>
+               </div>
+             </div>
+           </div>
+ <div class="col-md-3 col-sm-6 d-flex">
+             <div class="terminal-card w-100">
+               <div class="terminal-city-name">KOHAT</div>
+               <img src="{% static 'home/kohat.jpg' %}" alt="Kohat Terminal" />
+               <div class="overlay">
+                 <p><strong>Address:</strong> Rawalpindi road, near Highway, opp. Engineering University, Kohat</p>
+                 <p><i class="bi bi-telephone-fill"></i>0333-9622270</p>
+               </div>
+             </div>
+           </div>
+ <div class="col-md-3 col-sm-6 d-flex">
+             <div class="terminal-card w-100">
+               <div class="terminal-city-name">BARIKOT</div>
+               <img src="{% static 'home/barikot.jpg' %}" alt="Barikot Terminal" />
+               <div class="overlay">
+                 <p><strong>Address:</strong> Opp. Government Higher Secondary School, G.T. Road Barikot</p>
+                 <p><i class="bi bi-telephone-fill"></i>0946-751040</p>
+               </div>
+             </div>
+           </div>
+ <div class="col-md-3 col-sm-6 d-flex">
+             <div class="terminal-card w-100">
+               <div class="terminal-city-name">GHANDI CHOWK</div>
+               <img src="{% static 'home/ghandi-chowk.jpg' %}" alt="Gandi Chowk Terminal" />
+               <div class="overlay">
+                 <p><strong>Address:</strong> Anwar Hayat Khan Petrol Pump, Indus Highway, East Gandi Chowk</p>
+                 <p><i class="bi bi-telephone-fill"></i>0966-704579</p>
+               </div>
+             </div>
+           </div>
+ <div class="col-md-3 col-sm-6 d-flex">
+             <div class="terminal-card w-100">
+               <div class="terminal-city-name">SAKRAND</div>
+               <img src="{% static 'home/sakrand.jpg' %}" alt="Sakrand Terminal" />
+               <div class="overlay">
+                 <p><strong>Address:</strong> —</p>
+                 <p><i class="bi bi-telephone-fill"></i>—</p>
+               </div>
+             </div>
+           </div>
+ <div class="col-md-3 col-sm-6 d-flex">
+             <div class="terminal-card w-100">
+               <div class="terminal-city-name">SHAH MAQSOOD</div>
+               <img src="{% static 'home/shah-maqsood.jpg' %}" alt="Shah Maqsood Terminal" />
+               <div class="overlay">
+                 <p><strong>Address:</strong> Daewoo Express Shah Maqsood, near Shah Maqsood Interchange Hazara Motorway, Dist Haripur.</p>
+                 <p><i class="bi bi-telephone-fill"></i>—</p>
+               </div>
+             </div>
+           </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+{% endblock %}

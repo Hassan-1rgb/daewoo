@@ -1,0 +1,469 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{% block title %}Daewoo Express{% endblock %}</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet" />
+
+  <style>
+    /* Your existing styles remain unchanged */
+    html, body {
+      height: 100%;
+      background-color: white;
+    }
+    body {
+      display: flex;
+      flex-direction: column;
+    }
+    .topbar {
+      background-color: black;
+      color: white;
+      font-size: 16px;
+      font-weight: bold;
+      padding: 12px 20px;
+    }
+    .topbar input { width: 120px; }
+
+    /* Slimmer Second Navbar */
+    .navbar-custom {
+      background-color: #f8f9fa;
+      padding: 10px 20px;
+      border-bottom: 3px solid #0056b3;
+      margin-bottom: 0;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    .navbar-nav .nav-link {
+      color: #333 !important;
+      font-weight: 500;
+      font-size: 15px;
+      padding: 8px 14px !important;
+      margin: 0 3px;
+      border-radius: 6px;
+      transition: all 0.3s ease;
+      position: relative;
+      text-decoration: none !important;
+    }
+    
+    /* Remove blue dots/underlines from dropdown toggles */
+    .navbar-nav .nav-link.dropdown-toggle {
+      text-decoration: none !important;
+    }
+    .navbar-nav .nav-link.dropdown-toggle:focus,
+    .navbar-nav .nav-link.dropdown-toggle:active,
+    .navbar-nav .nav-link.dropdown-toggle:visited {
+      text-decoration: none !important;
+      outline: none !important;
+      box-shadow: none !important;
+    }
+    
+    .navbar-nav .nav-link::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: 4px;
+      width: 0;
+      height: 3px;
+      background-color: #0056b3;
+      transition: width 0.3s ease;
+    }
+    .navbar-nav .nav-link:hover::after,
+    .navbar-nav .nav-link.active::after { width: 100%; }
+    .navbar-nav .nav-link:hover {
+      background-color: #0056b3;
+      color: white !important;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0,86,179,0.3);
+      text-decoration: none !important;
+    }
+    
+    /* Remove dropdown arrow completely */
+    .navbar-nav .dropdown-toggle::after { 
+      display: none !important;
+    }
+    
+    .dropdown-menu {
+      border: none;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+      border-radius: 8px;
+      padding: 8px 0;
+      margin-top: 8px;
+      min-width: 220px;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(-10px);
+      transition: all 0.3s ease;
+    }
+    .dropdown:hover .dropdown-menu {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+      display: block;
+    }
+    .dropdown-item {
+      padding: 8px 16px;
+      font-weight: 500;
+      color: #333;
+      transition: all 0.3s ease;
+      text-decoration: none !important;
+    }
+    .dropdown-item:hover {
+      background-color: #0056b3;
+      color: white;
+      padding-left: 22px;
+      text-decoration: none !important;
+    }
+    .dropdown-item:focus,
+    .dropdown-item:active {
+      text-decoration: none !important;
+      outline: none !important;
+    }
+    
+    .dropdown-submenu { position: relative; }
+    .dropdown-submenu > .dropdown-menu {
+      top: 0; left: 100%; margin-left: 5px;
+      display: none; opacity: 0; transform: translateX(-10px);
+      transition: all 0.3s ease;
+    }
+    .dropdown-submenu:hover > .dropdown-menu {
+      display: block; opacity: 1; transform: translateX(0); visibility: visible;
+    }
+    .dropdown-submenu > .dropdown-item::after {
+      content: "▶"; float: right; margin-top: 2px; font-size: 12px; color: #666;
+    }
+    .dropdown-submenu:hover > .dropdown-item::after { color: white; }
+    .navbar-brand img { 
+    height: 35px;   /* decreased from 45px */
+    width: auto; 
+    transition: transform 0.3s ease; 
+    }
+   .navbar-brand:hover img { 
+    transform: scale(1.05); 
+    }
+
+
+    /* Remove focus outlines globally for navbar */
+    .navbar-nav .nav-link:focus,
+    .navbar-nav .nav-link:active,
+    .navbar-toggler:focus {
+      outline: none !important;
+      box-shadow: none !important;
+    }
+
+    @media (max-width: 991px) {
+      .navbar-custom { padding: 8px 15px; }
+      .navbar-nav .nav-link { padding: 8px 12px !important; margin: 2px 0; }
+      .dropdown-submenu > .dropdown-menu {
+        position: static; display: none; margin-left: 20px; box-shadow: none; border-left: 3px solid #0056b3;
+      }
+      .dropdown:hover .dropdown-menu { position: static; transform: none; }
+    }
+
+    footer {
+      background-color: #222; color: #ddd;
+      padding: 15px 20px; margin-top: auto; position: relative;
+    }
+    footer img { height: 35px; width: auto; }
+    footer .footer-text { font-size: 13px; color: #bbb; text-align: center; }
+
+    /* Profile Modal Styles */
+    .profile-modal .modal-header {
+      background-color: #0056b3;
+      color: white;
+    }
+    .profile-modal .form-control {
+      border-radius: 8px;
+      border: 1px solid #ced4da;
+    }
+    .profile-modal .form-label {
+      font-weight: 500;
+      color: #495057;
+    }
+    .profile-modal .btn-primary {
+      background-color: #0056b3;
+      border-color: #0056b3;
+      border-radius: 8px;
+    }
+
+    {% block extra_css %}{% endblock %}
+  </style>
+</head>
+<body>
+
+<!-- Top Black Navbar -->
+<div class="topbar d-flex justify-content-between align-items-center p-2 bg-dark text-white">
+  <div>
+      UAN: 042-111-007-008   0304-111-7008
+  </div>
+  <div class="d-flex align-items-center flex-nowrap">
+      <input type="text" class="form-control form-control-sm me-2" placeholder="Req #" />
+      <a href="#" class="text-white me-3 text-decoration-none">Check Refund Status</a>
+      {% if request.session.user_id %}
+          <a href="{% url 'logout' %}" class="text-white text-decoration-none">Logout</a>
+      {% else %}
+          <a href="{% url 'login' %}" class="text-white text-decoration-none">Sign In</a>
+      {% endif %}
+  </div>
+</div>
+
+<!-- Main Navbar: Hide if hide_navbar is True -->
+{% if not hide_navbar %}
+<nav class="navbar navbar-expand-lg navbar-light bg-light navbar-custom">
+  <div class="container-fluid">
+      
+    <img src="{% static 'home/logo2.png' %}" 
+    alt="Daewoo Express" 
+    height="35" 
+    width="auto"/>
+
+     
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+          <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto">
+
+            {% if request.session.user_id %}
+              <!-- Show for logged-in customers -->
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'customer_dashboard' %}">
+                  <i class="bi bi-house-door me-1"></i> Home
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'booking' %}">
+                  <i class="bi bi-calendar-check me-1"></i> Booking
+                </a>
+              </li>
+
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="ticketsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  <i class="bi bi-ticket-perforated me-1"></i> Tickets
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="ticketsDropdown">
+                  <li><a class="dropdown-item" href="{% url 'upcoming_tickets' %}">Upcoming Tickets</a></li>
+                  <li><a class="dropdown-item" href="{% url 'past_tickets' %}">Past Tickets</a></li>
+                </ul>
+              </li>
+
+              <li class="nav-item">
+                {% if latest_booking %}
+                  <a class="nav-link" href="{% url 'online_refund' latest_booking.id %}">
+                    <i class="bi bi-arrow-clockwise me-1"></i> Online Refund
+                  </a>
+                {% else %}
+                  <span class="nav-link text-muted">
+                    <i class="bi bi-arrow-clockwise me-1"></i> Online Refund
+                  </span>
+                {% endif %}
+              </li>
+
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'complaint_suggestion' %}">
+                  <i class="bi bi-chat-dots me-1"></i> Suggestions / Complaints
+                </a>
+              </li>
+              
+              <!-- Profile Button -->
+              <li class="nav-item">
+                <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#profileModal">
+                  <i class="bi bi-person-circle me-1"></i> Profile
+                </a>
+              </li>
+
+            {% else %}
+              <!-- Show for guests -->
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'terminal' %}">
+                  <i class="bi bi-building me-1"></i> Terminals
+                </a>
+              </li>
+
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="servicesDropdown" role="button" data-expanded="false">
+                  <i class="bi bi-gear me-1"></i> Travelling Services
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="servicesDropdown">
+                  <li class="dropdown-submenu">
+                    <a class="dropdown-item" href="#">Travelling Services</a>
+                    <ul class="dropdown-menu">
+                      <li><a class="dropdown-item" href="{% url 'in_journey_attractions' %}">In-Journey Attractions</a></li>
+                      <li><a class="dropdown-item" href="{% url 'safety_security' %}">Safety Security</a></li>
+                      <li><a class="dropdown-item" href="{% url 'trained_crew' %}">Trained Crew</a></li>
+                      <li><a class="dropdown-item" href="{% url 'terms_conditions' %}">Terms And Conditions</a></li>
+                    </ul>
+                  </li>
+                  <li><hr class="dropdown-divider" /></li>
+                  <li><a class="dropdown-item" href="{% url 'lahore_feeder' %}">Lahore Feeder Route</a></li>
+                  <li><a class="dropdown-item" href="{% url 'multan_metro' %}">Multan Metro Bus Service</a></li>
+                  <li><a class="dropdown-item" href="{% url 'workshop' %}">Workshop</a></li>
+                </ul>
+              </li>
+
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'news' %}">
+                  <i class="bi bi-newspaper me-1"></i> News
+                </a>
+              </li>
+
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="aboutDropdown" role="button" data-expanded="false">
+                  <i class="bi bi-info-circle me-1"></i> About Us
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="aboutDropdown">
+                  <li><a class="dropdown-item" href="{% url 'about_us' %}">About Us</a></li>
+                  <li><a class="dropdown-item" href="{% url 'blog' %}">Blog</a></li>
+                </ul>
+              </li>
+
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="policyDropdown" role="button" data-expanded="false">
+                  <i class="bi bi-shield-check me-1"></i> Policy
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="policyDropdown">
+                  <li><a class="dropdown-item" href="{% url 'health_policy' %}">Health & Safety Policy</a></li>
+                  <li><a class="dropdown-item" href="{% url 'gender_policy' %}">Gender Equality Policy</a></li>
+                </ul>
+              </li>
+            {% endif %}
+
+          </ul>
+      </div>
+  </div>
+</nav>
+{% endif %}
+
+<!-- Main Content Block -->
+<main>
+  {% block content %}{% endblock %}
+</main>
+
+<!-- Profile Modal -->
+{% if request.session.user_id %}
+<div class="modal fade profile-modal" id="profileModal" tabindex="-1" aria-labelledby="profileModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="profileModalLabel">User Profile</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <!-- Add form action and CSRF -->
+        <form method="post" action="{% url 'edit_profile' %}">
+          {% csrf_token %}
+          <div class="mb-3">
+            <label for="name" class="form-label">Full Name</label>
+            <input type="text" class="form-control" id="name" name="name"
+                   value="{{ request.session.user_name|default:'' }}" readonly>
+          </div>
+          <div class="mb-3">
+            <label for="phone" class="form-label">Phone Number</label>
+            <input type="tel" class="form-control" id="phone" name="phone"
+                   value="{{ request.session.user_phone|default:'' }}" readonly>
+          </div>
+          <div class="mb-3">
+            <label for="email" class="form-label">Email Address</label>
+            <input type="email" class="form-control" id="email" name="email"
+                   value="{{ request.session.user_email|default:'' }}" readonly>
+          </div>
+          <div class="mb-3">
+            <label for="cnic" class="form-label">CNIC / Passport</label>
+            <input type="text" class="form-control" id="cnic" name="cnic_passport"
+                   value="{{ request.session.user_cnic|default:'' }}" readonly>
+          </div>
+          <div class="mb-3">
+            <label for="address" class="form-label">Address</label>
+            <textarea class="form-control" id="address" name="address" rows="2" readonly>{{ request.session.user_address|default:'' }}</textarea>
+          </div>
+          <div class="mb-3">
+            <label for="password" class="form-label">Password</label>
+            <div class="input-group">
+              <input type="password" 
+                     class="form-control" 
+                     id="password" 
+                     value="{{ request.session.user_password|default:'********' }}" 
+                     readonly>
+              <button class="btn btn-outline-secondary" type="button" id="togglePassword">
+                <i class="bi bi-eye"></i>
+              </button>
+            </div>
+          </div>
+          
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary" id="editProfileBtn">Edit</button>
+            <button type="submit" class="btn btn-success d-none" id="saveProfileBtn">Save Changes</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+document.getElementById("editProfileBtn").addEventListener("click", function() {
+  document.querySelectorAll("#profileModal input, #profileModal textarea").forEach(el => {
+    if (el.id !== "password") { // keep password readonly
+      el.removeAttribute("readonly");
+    }
+  });
+  this.classList.add("d-none");
+  document.getElementById("saveProfileBtn").classList.remove("d-none");
+});
+</script>
+{% endif %}
+
+
+<!-- Footer -->
+<footer>
+  <div class="container d-flex justify-content-center align-items-center position-relative">
+    <div class="position-absolute start-0">
+      <img src="{% static 'home/logo2.png' %}" alt="Daewoo Express" height="20" width="100" />
+    </div>
+    <div class="footer-text text-center w-100">
+      Copyright © 2025-2025, Daewoo Express | Developed By MIS TEAM | All Rights Reserved
+    </div>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  // Toggle password visibility
+  document.addEventListener('DOMContentLoaded', function() {
+    const togglePassword = document.getElementById('togglePassword');
+    const passwordInput = document.getElementById('password');
+    
+    if (togglePassword && passwordInput) {
+      togglePassword.addEventListener('click', function() {
+        const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+        passwordInput.setAttribute('type', type);
+        
+        // Toggle the eye icon
+        const icon = this.querySelector('i');
+        if (type === 'password') {
+          icon.classList.remove('bi-eye-slash');
+          icon.classList.add('bi-eye');
+        } else {
+          icon.classList.remove('bi-eye');
+          icon.classList.add('bi-eye-slash');
+        }
+      });
+    }
+    
+    // Handle edit profile button
+    const editProfileBtn = document.getElementById('editProfileBtn');
+    if (editProfileBtn) {
+      editProfileBtn.addEventListener('click', function() {
+        // In a real application, this would redirect to an edit profile page
+        alert('Edit Profile functionality would redirect to an edit profile page');
+      });
+    }
+  });
+</script>
+{% block extra_js %}{% endblock %}
+</body>
+</html>

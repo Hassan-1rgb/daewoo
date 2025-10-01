@@ -1,0 +1,240 @@
+{% extends "home/base.html" %}
+{% load static %}
+
+{% block title %}In-Journey Attractions - Daewoo{% endblock %}
+
+{% block content %}
+
+  <title>News - Daewoo</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      background: #f5f7fa;
+      color: #222;
+      line-height: 1.6;
+    }
+    .page {
+      max-width: 1100px;
+      margin: 40px auto;
+      padding: 20px 30px;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.06);
+    }
+    .page h1 {
+      text-align: center;
+      font-size: 2rem;
+      color: #003366;
+      margin-bottom: 40px;
+      position: relative;
+    }
+    .page h1::after {
+      content: "";
+      display: block;
+      width: 80px;
+      height: 3px;
+      background: #ff6600;
+      margin: 10px auto 0;
+      border-radius: 2px;
+    }
+    .news-item {
+      margin-bottom: 60px;
+      border-bottom: 1px solid #e6e6e6;
+      padding-bottom: 40px;
+    }
+    .news-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 28px;
+      align-items: center;
+    }
+    .news-image img {
+      width: 100%;
+      height: auto;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      transition: transform 0.3s ease;
+    }
+    .news-image img:hover {
+      transform: scale(1.02);
+    }
+    .news-content h2 {
+      margin: 0 0 10px;
+      font-size: 1.7rem;
+      color: #003366;
+    }
+    .date {
+      color: #888;
+      font-size: 0.9rem;
+      margin-bottom: 14px;
+      font-style: italic;
+    }
+    .intro {
+      font-size: 1rem;
+      margin-bottom: 14px;
+      color: #333;
+    }
+    .full-text {
+      display: none;
+      margin-top: 20px;
+      font-size: 1rem;
+      padding: 15px 20px;
+      background: #f9f9fb;
+      border-left: 4px solid #003366;
+      border-radius: 6px;
+    }
+    .read-more {
+      background: #003366;
+      color: #fff;
+      padding: 8px 16px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.95rem;
+      transition: background 0.3s;
+    }
+    .read-more:hover {
+      background: #ff6600;
+    }
+    @media (max-width: 900px) {
+      .news-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <h1>Daewoo Express News & Updates</h1>
+
+    <!-- NEWS ITEM 1 -->
+    <div class="news-item">
+      <div class="news-grid">
+        <div class="news-image">
+          <img src="{% static 'home/news1.jpeg' %}" alt="Daewoo launches DHA bus service">
+        </div>
+        <div class="news-content">
+          <h2>Daewoo Express launches Lahore DHA bus service</h2>
+          <div class="date">01 Dec 2015</div>
+          <p class="intro">
+            Daewoo Express inaugurated its international standard urban bus service at DHA Lahore. The new buses come equipped with Euro-3 engines, offering 75% fewer emissions and improved comfort for passengers...
+          </p>
+          <button class="read-more" onclick="toggleText(this)">Read More</button>
+        </div>
+      </div>
+      <div class="full-text">
+        <p>
+          The inauguration was held at the new DHA terminal on Bedian Road. Brig. Zafar Yasin Babar praised the efforts of Daewoo and DHA in providing modern transport solutions.  
+        </p>
+        <p>
+          Daewoo has been operating the Lahore City Bus Service for 17 years, introducing air-conditioned diesel buses for the first time in Pakistan.
+        </p>
+      </div>
+    </div>
+
+    <!-- NEWS ITEM 2 -->
+    <div class="news-item">
+      <div class="news-grid">
+        <div class="news-image">
+          <img src="{% static 'home/daewoo-growth.jpeg' %}" alt="Daewoo Express Growth">
+        </div>
+        <div class="news-content">
+          <h2>Daewoo Express, Growing Bigtime</h2>
+          <div class="date">29 Sep 2015</div>
+          <p class="intro">
+            Since its inception in 1997, Daewoo Express has expanded to over 60 stations nationwide, serving more than 500,000 passengers monthly across Punjab, Sindh, and Khyber Pakhtunkhwa...
+          </p>
+          <button class="read-more" onclick="toggleText(this)">Read More</button>
+        </div>
+      </div>
+      <div class="full-text">
+        <p>
+          In 2015 alone, services expanded to Bahawalnagar, Khanpur, Nawabshah, Khairpur, and Arifwala. Major terminal upgrades were also carried out at DG Khan, Sahiwal, and Jhang.
+        </p>
+      </div>
+    </div>
+
+    <!-- NEWS ITEM 3 -->
+    <div class="news-item">
+      <div class="news-grid">
+        <div class="news-image">
+          <img src="{% static 'home/dha-partnership.jpeg' %}" alt="Daewoo Express partners with DHA Lahore">
+        </div>
+        <div class="news-content">
+          <h2>Partnership with DHA Lahore</h2>
+          <div class="date">01 Oct 2015</div>
+          <p class="intro">
+            Daewoo Express and DHA Lahore launched a landmark project, including an inter-city express service, a DHA local bus service, and a state-of-the-art terminal with shopping facilities in Phase-5...
+          </p>
+          <button class="read-more" onclick="toggleText(this)">Read More</button>
+        </div>
+      </div>
+      <div class="full-text">
+        <p>
+          This project aims to deliver world-class transport services to DHA residents and surrounding communities, marking a new era in urban mobility.
+        </p>
+      </div>
+    </div>
+
+    <!-- NEWS ITEM 4 -->
+    <div class="news-item">
+      <div class="news-grid">
+        <div class="news-image">
+          <img src="{% static 'home/automobile-agreement.jpg' %}" alt="Daewoo Express Skywell Agreement">
+        </div>
+        <div class="news-content">
+          <h2>Strategic Alliance with Skywell Automobiles</h2>
+          <div class="date">26 Aug 2020</div>
+          <p class="intro">
+            Daewoo Express and Skywell Automobiles, China, signed a landmark agreement to introduce electric vehicles in Pakistan, with a two-phase plan for bus deployment and local manufacturing...
+          </p>
+          <button class="read-more" onclick="toggleText(this)">Read More</button>
+        </div>
+      </div>
+      <div class="full-text">
+        <p>
+          The agreement was signed simultaneously in Islamabad and China, with federal ministers, senators, and ambassadors in attendance. Phase 1 brings electric buses; Phase 2 will establish a manufacturing plant in Pakistan.
+        </p>
+        <p>
+          The partnership is expected to bring USD 500 million in foreign direct investment, driving sustainable transport solutions and economic growth.
+        </p>
+      </div>
+    </div>
+
+    <!-- NEWS ITEM 5 -->
+    <div class="news-item">
+      <div class="news-grid">
+        <div class="news-image">
+          <img src="{% static 'home/news6.jpg' %}" alt="Daewoo Express Mobile App">
+        </div>
+        <div class="news-content">
+          <h2>Daewoo Express Goes Mobile</h2>
+          <div class="date">01 Feb 2016</div>
+          <p class="intro">
+            Daewoo Express launched its official mobile app, enabling passengers to book tickets, check schedules, view fares, and redeem Daewoo Miles — all from their smartphones...
+          </p>
+          <button class="read-more" onclick="toggleText(this)">Read More</button>
+        </div>
+      </div>
+      <div class="full-text">
+        <p>
+          The app is available on both Android and iOS platforms, offering seamless booking and travel management for all passengers.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function toggleText(btn) {
+      let fullText = btn.closest('.news-item').querySelector('.full-text');
+      if (fullText.style.display === "block") {
+        fullText.style.display = "none";
+        btn.textContent = "Read More";
+      } else {
+        fullText.style.display = "block";
+        btn.textContent = "Read Less";
+      }
+    }
+  </script>
+</body>
+
+{% endblock %}

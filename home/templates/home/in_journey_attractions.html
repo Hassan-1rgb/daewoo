@@ -1,0 +1,110 @@
+{% extends "home/base.html" %}
+{% load static %}
+
+{% block title %}In-Journey Attractions - Daewoo{% endblock %}
+
+{% block content %}
+<div class="page my-5">
+  <div class="hero-grid">
+
+    <!-- LEFT: Images -->
+    <div class="hero-image">
+      <img src="{% static 'home/in-journey-attractions.jpg' %}" alt="In-Journey Attractions">
+      <img src="{% static 'home/in-journey.jpg' %}" 
+           alt="Second view of in-journey attractions" style="margin-top:16px;">
+    </div>
+
+    <!-- RIGHT: Content -->
+    <div class="content">
+      <h1>In-Journey Attractions</h1>
+
+      <section class="card">
+        <h2>Punctuality</h2>
+        <p>
+          Time is the most precious asset at this age. At Daewoo, safety of this asset is guaranteed.
+          Punctuality &amp; regularity is the key feature of our service, which is assured by leaving no stone
+          unturned in making timely departures and arrivals. The passengers are valuable to us, so as their time.
+        </p>
+      </section>
+
+      <section class="card mt-3">
+        <h2>Audio / Visual Entertainment</h2>
+        <p>
+          Daewoo is committed to make your journey full of comfort &amp; excitement. Traveling starts with recitation
+          of the 'Journey Prayer', followed by Audio Visual Entertainment including:
+        </p>
+        <ul>
+          <li>Audio Songs.</li>
+          <li>Family Movies, Dramas, Songs and Documentaries.</li>
+          <li>Switching System with Multiple Choices of Audio &amp; Video.</li>
+          <li>All esteemed daily Newspapers are also available in the bus.</li>
+          <li>Provision of Head Phones with every seat for an undisturbed enjoyment.</li>
+        </ul>
+      </section>
+
+      <section class="card mt-3">
+        <h2>Luxury Buses</h2>
+        <p>
+          Add comfort to your journey by traveling through our luxury buses. Buses are equipped with:
+        </p>
+        <ul>
+          <li>Comfortable and spacious seats.</li>
+          <li>Latest audio visual technologies.</li>
+          <li>Online tracking system.</li>
+        </ul>
+        <p>
+          Apart from this, a calm and peaceful environment is maintained in the bus for a luxurious traveling.
+        </p>
+      </section>
+    </div>
+
+  </div>
+
+  <!-- BELOW IMAGE: Full width sections -->
+  <div class="below mt-4">
+    <div class="card">
+      <h2>Luggage</h2>
+      <p>
+        Every possible support is available for carrying personal luggage while traveling. Please be aware that depending
+        on local regulations, certain items which may cause injuries may not be taken on board in your carry-on baggage.
+        Following are some available facilities:
+      </p>
+      <ul>
+        <li>Luggage up to 30-kg can be carried by each passenger.</li>
+        <li>In case of extra luggage, ELT facility can be availed.</li>
+        <li>Attachment of luggage tags for safety and security.</li>
+        <li>Luggage is handled by trained loaders.</li>
+        <li>Porters providing free service.</li>
+      </ul>
+    </div>
+
+    <div class="card mt-3">
+      <h2>Courteous &amp; Trained Crew</h2>
+      <p>
+        Our courteous and trained crew is responsible for a safe &amp; luxurious journey. We are pioneer of introducing
+        the concept of road hostess in the bus. Crew, which consists of Driver, Hostess and A Guard, is selected and
+        trained in a manner to handle its duties professionally.
+      </p>
+    </div>
+
+    <div class="card mt-3">
+      <h2>Newspapers &amp; Magazine</h2>
+      <p>
+        Passengers can add to their joyful moments during the journey by reading latest newspapers and informative,
+        entertaining and educational contents presented in Daewoo Magazine i.e. "Hamari Manzilen" addition of which
+        has been admired on large basis by valuable customers.
+      </p>
+    </div>
+  </div>
+</div>
+
+<style>
+.page { max-width:1100px; margin:auto; padding:20px; background:#fff; border-radius:10px; box-shadow:0 6px 20px rgba(16,24,40,0.06); }
+.hero-grid { display:grid; grid-template-columns:1fr 1fr; gap:24px; align-items:start; }
+.hero-image img { width:100%; height:360px; object-fit:cover; border-radius:8px; display:block; margin-bottom:16px; }
+.content h1 { color:#003366; margin-bottom:12px; }
+.card { background:#fbfdff; border:1px solid #eef3f8; padding:14px; border-radius:8px; }
+.below .card { margin-top:12px; }
+@media(max-width:800px) { .hero-grid { grid-template-columns:1fr; } .hero-image img { height:220px; } }
+</style>
+{% endblock %}

@@ -1,0 +1,235 @@
+{% extends "home/base.html" %}
+{% load static %}
+
+{% block title %}In-Journey Attractions - Daewoo{% endblock %}
+
+{% block content %}
+
+  <title>Blog - Daewoo</title>
+  <style>
+    body {
+      font-family: "Segoe UI", Inter, system-ui, sans-serif;
+      margin: 0;
+      background: #f4f6f9;
+      color: #222;
+      line-height: 1.6;
+    }
+
+    /* Page container */
+    .page {
+      max-width: 1200px;
+      margin: 40px auto;
+      padding: 20px;
+    }
+
+    /* Page title */
+    .page h1 {
+      font-size: 2.5rem;
+      text-align: center;
+      margin-bottom: 40px;
+      color: #003366;
+      font-weight: 700;
+      letter-spacing: 1px;
+    }
+
+    /* Blog card */
+    .blog-item {
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+      margin-bottom: 50px;
+      overflow: hidden;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .blog-item:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 25px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Blog layout */
+    .blog-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      padding: 20px;
+    }
+
+    .blog-image img {
+      width: 100%;
+      border-radius: 10px;
+      object-fit: cover;
+    }
+
+    .blog-content h2 {
+      margin: 0 0 12px;
+      color: #003366;
+      font-size: 1.6rem;
+    }
+
+    .date {
+      color: #888;
+      font-size: 0.9rem;
+      margin-bottom: 15px;
+    }
+
+    .intro {
+      font-size: 1rem;
+      color: #444;
+      margin-bottom: 15px;
+    }
+
+    /* Read more button */
+    .read-more {
+      background: #003366;
+      color: #fff;
+      padding: 10px 18px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.95rem;
+      font-weight: 500;
+      transition: background 0.3s ease;
+    }
+
+    .read-more:hover {
+      background: #00509e;
+    }
+
+    /* Full text */
+    .full-text {
+      display: none;
+      padding: 0 20px 20px;
+      border-top: 1px solid #eee;
+      margin-top: 20px;
+    }
+
+    .full-text p {
+      margin: 15px 0;
+      font-size: 1rem;
+      color: #333;
+    }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      .blog-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <h1>Daewoo Blog</h1>
+
+    <!-- BLOG ITEM 1 -->
+    <div class="blog-item">
+      <div class="blog-grid">
+        <div class="blog-image">
+          <img src="{% static 'home/blog1.jpeg' %}" alt="How to Book a Bus Ticket">
+        </div>
+        <div class="blog-content">
+          <h2>How to Book a Bus Ticket in Pakistan</h2>
+          <div class="date">15 Sep 2025</div>
+          <p class="intro">
+            Pakistan is a country with a diverse landscape, ranging from the mountains of the Himalayas to the beaches of the Arabian Sea.
+            Daewoo is a renowned bus company in Pakistan, offering safe, reliable, and comfortable bus travel to millions of passengers each year.
+          </p>
+          <button class="read-more" onclick="toggleText(this)">Read More</button>
+        </div>
+      </div>
+      <div class="full-text">
+        <p>
+          Pakistan is a country with a diverse landscape, ranging from the mountains of the Himalayas to the beaches of the Arabian Sea. 
+          Due to the country's size and geography, bus service is an important mode of transportation for both locals and tourists. 
+          Millions of people use buses to travel within and between cities in Pakistan, making it a vital part of the country's transportation infrastructure.
+        </p>
+        <p>
+          Daewoo is a renowned bus company in Pakistan, offering safe, reliable, and comfortable bus travel to millions of passengers each year. 
+          With over two decades of experience in the industry, Daewoo has become a household name in Pakistan, known for its quality service and affordable fares. 
+          The company operates a vast network of bus routes, connecting major cities and towns across the country. 
+          Whether you're travelling for business or pleasure, Daewoo is a trusted choice for your transportation needs in Pakistan.
+        </p>
+        <p>
+          Ways to Book Your Bus Ticket:  
+          <br><strong>Online Booking:</strong> In today's digital age, online booking has become the preferred mode of booking for many travellers. 
+          Daewoo offers a user-friendly online booking system, accessible through their website or mobile app.  
+          Visit the Daewoo Website or Mobile App → Select Your Seat and Bus Type → Make Payment and Confirm Booking.
+        </p>
+        <p>
+          <strong>Booking at a Daewoo Terminal:</strong>  
+          If you prefer to book in person, visit any terminal in Pakistan. Provide your details, select a seat, and pay using cash, card, or transfer.  
+          Booking in advance saves time and ensures a better seat.
+        </p>
+        <p>
+          <strong>Conclusion:</strong>  
+          Whether online or at a terminal, booking with Daewoo ensures a safe, reliable, and comfortable travel experience. 
+          Booking early is recommended to avoid delays and to secure your preferred bus and seat.
+        </p>
+      </div>
+    </div>
+
+    <!-- BLOG ITEM 2 -->
+    <div class="blog-item">
+      <div class="blog-grid">
+        <div class="blog-image">
+          <img src="{% static 'home/blog2.jpg' %}" alt="Online Bus Booking Guide">
+        </div>
+        <div class="blog-content">
+          <h2>The Ultimate Guide to Online Bus Booking in Pakistan</h2>
+          <div class="date">15 Sep 2025</div>
+          <p class="intro">
+            Bus travel is a vital mode of transportation in Pakistan, connecting people from different regions and facilitating trade and commerce. 
+            Online platforms have made ticket booking faster and more convenient.
+          </p>
+          <p>
+            Bus travel is a vital mode of transportation in Pakistan, connecting people from different regions and facilitating trade and commerce. 
+            With a vast network of roads and highways spanning across the country, buses offer a convenient and affordable way to travel for both locals and tourists. 
+            However, traditional bus booking methods such as visiting a bus terminal and standing in long queues can be time-consuming and inconvenient. 
+            In recent years, the rise of online bus booking platforms has transformed the way people book bus tickets in Pakistan.
+          </p>
+          <button class="read-more" onclick="toggleText(this)">Read More</button>
+        </div>
+      </div>
+      <div class="full-text">
+        
+        <p>
+          Online bus booking platforms have gained popularity due to their convenience, accessibility, and time-saving features. 
+          With just a few clicks, passengers can browse through different bus operators, choose their preferred seats, and make secure online payments. 
+          Moreover, online booking platforms offer a wide range of bus options, including luxury buses with advanced facilities, such as Wi-Fi, air conditioning, and entertainment systems.
+        </p>
+        <p>
+          <strong>Benefits of Online Bus Booking:</strong>  
+          Convenience and time-saving • Access to a wider range of buses • Competitive pricing • Easy cancellations • Real-time tracking.  
+        </p>
+        <p>
+          <strong>Step-by-Step Guide:</strong>  
+          1. Choose a reliable platform (e.g., Daewoo).  
+          2. Select route and travel date.  
+          3. Pick bus type and seating.  
+          4. Enter passenger details.  
+          5. Make secure payment → Receive SMS/email confirmation.
+        </p>
+        <p>
+          <strong>Conclusion:</strong>  
+          Online bus booking ensures a hassle-free, flexible, and modern travel experience in Pakistan. 
+          Daewoo continues to lead this transformation, making journeys smooth and reliable for everyone.
+        </p>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    function toggleText(btn) {
+      let fullText = btn.closest('.blog-item').querySelector('.full-text');
+      if (fullText.style.display === "block") {
+        fullText.style.display = "none";
+        btn.textContent = "Read More";
+      } else {
+        fullText.style.display = "block";
+        btn.textContent = "Read Less";
+      }
+    }
+  </script>
+</body>
+
+{% endblock %}

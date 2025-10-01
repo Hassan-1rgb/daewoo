@@ -1,0 +1,134 @@
+{% extends "home/base.html" %}
+{% load static %}
+
+{% block title %}In-Journey Attractions - Daewoo{% endblock %}
+
+{% block content %}
+
+  <title>Health & Safety Policy - Daewoo</title>
+  <style>
+    body {
+      font-family: "Segoe UI", Arial, sans-serif;
+      background: #f9fbfd;
+      margin: 0;
+      color: #333;
+    }
+    .page {
+      max-width: 1100px;
+      margin: 40px auto;
+      padding: 20px;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+    }
+    h1 {
+      text-align: center;
+      color: #004080;
+      font-size: 2.4rem;
+      margin-bottom: 30px;
+    }
+    p.intro {
+      color: #555;
+      margin-bottom: 20px;
+      font-size: 1.1rem;
+      line-height: 1.6;
+    }
+
+    /* Two-column sections */
+    .section {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 30px;
+      align-items: center;
+      margin-bottom: 40px;
+    }
+    .section img {
+      width: 100%;
+      border-radius: 12px;
+      object-fit: cover;
+    }
+    .section .text {
+      padding: 10px;
+    }
+    .section .text h2 {
+      color: #004080;
+      font-size: 1.6rem;
+      margin-bottom: 15px;
+    }
+
+    /* Policy points */
+    ul.policy {
+      list-style: none;
+      padding: 0;
+    }
+    ul.policy li {
+      background: #f0f6ff;
+      margin: 10px 0;
+      padding: 14px 18px;
+      border-radius: 8px;
+      font-size: 1rem;
+      line-height: 1.5;
+      transition: transform 0.2s;
+    }
+    ul.policy li:hover {
+      transform: translateX(5px);
+      background: #e1edff;
+    }
+
+    @media(max-width: 900px) {
+      .section {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <h1>Health & Safety Policy</h1>
+
+    <!-- Top Section (Image Left, Text Right) -->
+    <div class="section">
+      <div class="image">
+        <img src="{% static 'home/health-safety.jpeg' %}" alt="Health & Safety">
+      </div>
+      <div class="text">
+        <h2>Our Commitment</h2>
+        <p class="intro">
+          Daewoo is committed to ensuring the safety, health, and wellbeing of our employees, passengers, and stakeholders.  
+          We believe safety is everyone’s responsibility and strive to create a culture where safety is always prioritized.
+        </p>
+        <ul class="policy">
+          <li>1. Provide a safe and healthy work environment for all employees.</li>
+          <li>2. Regularly inspect and maintain all buses, terminals, and facilities.</li>
+          <li>3. Ensure proper ventilation, lighting, and cleanliness in all workplaces.</li>
+          <li>4. Train staff in first aid, emergency response, and fire safety procedures.</li>
+          <li>5. Enforce use of personal protective equipment (PPE) where required.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Bottom Section (Text Left, Image Right) -->
+    <div class="section">
+      <div class="text">
+        <h2>Detailed Safety Measures</h2>
+        <ul class="policy">
+          <li>6. Establish clear evacuation procedures for emergencies.</li>
+          <li>7. Monitor and reduce exposure to hazardous materials and risks.</li>
+          <li>8. Conduct regular health screenings and wellness programs.</li>
+          <li>9. Encourage staff to report unsafe conditions without fear of retaliation.</li>
+          <li>10. Provide safe drinking water and clean restroom facilities at terminals.</li>
+          <li>11. Ensure drivers follow road safety rules and rest schedules.</li>
+          <li>12. Prevent workplace accidents through regular safety drills.</li>
+          <li>13. Maintain accident reporting and investigation systems.</li>
+          <li>14. Promote awareness of mental health and stress management.</li>
+          <li>15. Continuously review and improve safety practices.</li>
+        </ul>
+      </div>
+      <div class="image">
+        <img src="{% static 'home/health-safety2.jpeg' %}" alt="Safety Measures">
+      </div>
+    </div>
+  </div>
+</body>
+
+{% endblock %}

@@ -1,0 +1,36 @@
+{% extends "home/base.html" %}
+{% block content %}
+<div class="container mt-4">
+  <h2>Confirm Booking</h2>
+
+  <div class="card">
+    <div class="card-body">
+      <h5>Route: {{ bus.route.origin }} → {{ bus.route.destination }}</h5>
+      <p>Type: {{ bus.bus_type }}</p>
+      <p>Departure: {{ bus.departure_time|time:"h:i A" }}</p>
+      <p>Price: Rs {{ bus.price }}</p>
+      <p>Journey Date: {{ booking_date }}</p>
+      
+      <form method="post">
+        {% csrf_token %}
+        <input type="hidden" name="booking_date" value="{{ booking_date }}">
+
+        <!-- ✅ Seat Selection -->
+        <div class="mb-3">
+          <label for="seat_number" class="form-label">Select Seat</label>
+          <select name="seat_number" id="seat_number" class="form-select" required>
+            {% for seat in available_seats %}
+              <option value="{{ seat }}">{{ seat }}</option>
+            {% empty %}
+              <option disabled>No seats available</option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <button type="submit" class="btn btn-success">Confirm Booking</button>
+        <a href="{% url 'booking' %}" class="btn btn-secondary">Cancel</a>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

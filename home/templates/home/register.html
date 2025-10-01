@@ -1,0 +1,343 @@
+<!-- templates/home/register.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration - Travel Booking</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #1a2a6c);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 100vh;
+            padding: 1rem;
+            color: #333;
+        }
+        
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        .content-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-grow: 1;
+            padding: 2rem 0;
+        }
+        
+        .register-container {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 2.5rem 3rem;
+            border-radius: 16px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: 700px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transform: translateY(0);
+            transition: transform 0.3s ease;
+        }
+        
+        .register-container:hover {
+            transform: translateY(-5px);
+        }
+        
+        h2 {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: #1a2a6c;
+            font-size: 2.2rem;
+            font-weight: 700;
+            position: relative;
+        }
+        
+        h2:after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(to right, #1a2a6c, #b21f1f);
+            border-radius: 2px;
+        }
+        
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+        
+        .form-row {
+            display: flex;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+        }
+        
+        .form-group {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            min-width: 250px;
+        }
+        
+        label {
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #444;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        label i {
+            margin-right: 8px;
+            color: #1a2a6c;
+        }
+        
+        input, select, textarea {
+            padding: 0.8rem 1rem;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background-color: #f9f9f9;
+        }
+        
+        input:focus, select:focus, textarea:focus {
+            border-color: #3498db;
+            background-color: #fff;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+            outline: none;
+        }
+        
+        button[type="submit"] {
+            margin-top: 0.5rem;
+            padding: 0.9rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: white;
+            background: linear-gradient(to right, #1a2a6c, #b21f1f);
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        button[type="submit"]:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.5s;
+        }
+        
+        button[type="submit"]:hover:before {
+            left: 100%;
+        }
+        
+        button[type="submit"]:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .login-link {
+            margin-top: 2rem;
+            text-align: center;
+            font-size: 0.95rem;
+            color: #555;
+        }
+        
+        .login-link a {
+            color: #1a2a6c;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .login-link a:after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #b21f1f;
+            transition: width 0.3s ease;
+        }
+        
+        .login-link a:hover:after {
+            width: 100%;
+        }
+        
+        .errorlist {
+            color: #e74c3c;
+            margin: 0.5rem 0 0 0;
+            padding: 0;
+            list-style: none;
+            font-size: 0.9rem;
+            background-color: rgba(231, 76, 60, 0.1);
+            padding: 0.7rem;
+            border-radius: 6px;
+            border-left: 4px solid #e74c3c;
+        }
+        
+        .errorlist li {
+            display: flex;
+            align-items: center;
+        }
+        
+        .errorlist li:before {
+            content: '\f06a';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            margin-right: 8px;
+        }
+        
+        .form-group.full-width {
+            flex: 1 1 100%;
+        }
+        
+        .page-footer {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 1rem 0;
+            text-align: center;
+            width: 100%;
+        }
+        
+        .page-footer p {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.95rem;
+        }
+        
+        .page-footer a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .page-footer a:hover {
+            color: #f0f0f0;
+        }
+        
+        @media (max-width: 768px) {
+            .form-row {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .form-group {
+                min-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="content-wrapper">
+        <div class="register-container">
+            <h2><i class="fas fa-user-plus"></i> Create Account</h2>
+
+            <form method="post">
+                {% csrf_token %}
+
+                <!-- Render non-field errors -->
+                {% if form.non_field_errors %}
+                    <ul class="errorlist">
+                        {% for error in form.non_field_errors %}
+                            <li>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="id_name"><i class="fas fa-user"></i> Full Name</label>
+                        {{ form.name }}
+                        {{ form.name.errors }}
+                    </div>
+                    <div class="form-group">
+                        <label for="id_phone"><i class="fas fa-phone"></i> Phone Number</label>
+                        {{ form.phone }}
+                        {{ form.phone.errors }}
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="id_cnic_passport"><i class="fas fa-id-card"></i> CNIC/Passport</label>
+                        {{ form.cnic_passport }}
+                        {{ form.cnic_passport.errors }}
+                    </div>
+                    <div class="form-group">
+                        <label for="id_email"><i class="fas fa-envelope"></i> Email Address</label>
+                        {{ form.email }}
+                        {{ form.email.errors }}
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="id_dob"><i class="fas fa-calendar-alt"></i> Date of Birth</label>
+                        {{ form.dob }}
+                        {{ form.dob.errors }}
+                    </div>
+                    <div class="form-group">
+                        <label for="id_password"><i class="fas fa-lock"></i> Password</label>
+                        {{ form.password }}
+                        {{ form.password.errors }}
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="id_confirm_password"><i class="fas fa-lock"></i> Confirm Password</label>
+                        {{ form.confirm_password }}
+                        {{ form.confirm_password.errors }}
+                    </div>
+                    <div class="form-group">
+                        <label for="id_city"><i class="fas fa-city"></i> City</label>
+                        {{ form.city }}
+                        {{ form.city.errors }}
+                    </div>
+                </div>
+
+                <div class="form-group full-width">
+                    <label for="id_address"><i class="fas fa-map-marker-alt"></i> Address</label>
+                    {{ form.address }}
+                    {{ form.address.errors }}
+                </div>
+
+                <button type="submit"><i class="fas fa-user-plus"></i> Create Account</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="page-footer">
+        <p>Already have an account? <a href="{% url 'login' %}">Sign in here</a></p>
+    </div>
+</body>
+</html>

@@ -1,0 +1,59 @@
+{% extends "home/base.html" %}
+{% load static %}
+
+{% block title %}Lahore Feeder Route - Daewoo Express{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+  <div class="row row-cols-md-2 align-items-center g-4">
+
+    <!-- Left: Images -->
+    <div class="col">
+      <img src="{% static 'home/matro.jpeg' %}" alt="Lahore Feeder Metro Bus" class="service-image mb-3">
+      <img src="{% static 'home/metro.jpeg' %}" alt="Lahore Feeder Metro Bus" class="service-image">
+    </div>
+
+    <!-- Right: Introduction -->
+    <div class="col">
+      <h2 class="service-title">Lahore Feeder Route</h2>
+      <p class="service-intro">
+        Lahore Feeder Route is a project of Daewoo Pakistan. The Punjab Mass Transit Authority (PMA) has started 200 new public buses in collaboration with Daewoo on feeder routes for the Lahore Metro Bus routes. The feeder bus service will connect the rest of the city with the 27-km corridor of the Metro Bus.
+      </p>
+      <p class="service-intro">
+        The transportation authority has already handed over the possession of Green Town Bus Depot and Lahore Railway Station to Daewoo Pakistan Express, the contractor and operator of the feeder buses. The PMA and Daewoo has started the feeder buses project as these buses have successfully passed through warranty inspection, vehicle inspection, registration, insurance, and installation of e-ticketing and GPS tracking equipment.
+      </p>
+      <p class="service-intro">
+        Initially, these buses would run on 15 feeder routes of the Lahore Metro Bus service, covering 123km. Later, more buses would be inducted in a phased manner once Lahore Orange Line Metro Train becomes operational. The authority has already completed its homework to integrate e-ticketing systems of both the Lahore Metro Bus service and feeder buses.
+      </p>
+    </div>
+
+  </div>
+</div>
+
+<style>
+  .service-title {
+    font-weight: 900;
+    font-size: 2.5rem;
+    color: #0d6efd;
+    margin-bottom: 1rem;
+  }
+  .service-intro {
+    font-size: 1.1rem;
+    color: #343a40;
+    line-height: 1.8;
+  }
+  .service-image {
+    width: 100%;
+    border-radius: 12px;
+    object-fit: cover;
+  }
+  @media (max-width: 768px) {
+    .row-cols-md-2 {
+      flex-direction: column;
+    }
+    .service-image {
+      margin-bottom: 1rem;
+    }
+  }
+</style>
+{% endblock %}

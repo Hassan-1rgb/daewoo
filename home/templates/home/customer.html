@@ -1,0 +1,483 @@
+{% extends "home/base.html" %}
+{% load static %}
+
+{% block title %}Customer Dashboard{% endblock %}
+
+{% block content %}
+{% if messages %}
+  <div class="container mt-3">
+    {% for message in messages %}
+      <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+        <div class="d-flex align-items-center">
+          <span class="alert-icon me-2">
+            {% if message.tags == 'success' %}✓{% elif message.tags == 'error' %}✗{% elif message.tags == 'warning' %}⚠️{% else %}ℹ️{% endif %}
+          </span>
+          <div>{{ message }}</div>
+        </div>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+    {% endfor %}
+  </div>
+{% endif %}
+
+<div class="dashboard-container">
+  <div class="container">
+    <!-- Dashboard Header -->
+    <div class="dashboard-header text-center mb-5">
+      <div class="welcome-card card border-0 shadow-sm">
+        <div class="card-body py-4">
+          <div class="avatar-container mb-3">
+            <div class="user-avatar">
+              <i class="bi bi-person-circle"></i>
+            </div>
+          </div>
+          <h1 class="welcome-title">Welcome, {{ customer.name }}</h1>
+          <p class="welcome-subtitle text-muted">Manage your travel bookings and preferences</p>
+          
+          <div class="user-stats d-flex justify-content-center mt-4">
+            <div class="stat-item mx-3">
+              <div class="stat-number">{{ total_bookings|default:0 }}</div>
+              <div class="stat-label">Total Bookings</div>
+            </div>
+            <div class="stat-item mx-3">
+              <div class="stat-number">{{ upcoming_bookings|default:0 }}</div>
+              <div class="stat-label">Upcoming Trips</div>
+            </div>
+            <div class="stat-item mx-3">
+              <div class="stat-number">{{ completed_bookings|default:0 }}</div>
+              <div class="stat-label">Completed/Cancel</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="quick-actions mb-5">
+      <h3 class="section-title mb-4">Quick Actions</h3>
+      <div class="row g-3">
+        <div class="col-md-4">
+          <a href="{% url 'booking' %}" class="action-card card border-0 shadow-sm h-100 text-decoration-none">
+            <div class="card-body d-flex flex-column align-items-center p-4">
+              <div class="action-icon mb-3">
+                <i class="bi bi-calendar-plus"></i>
+              </div>
+              <h5 class="action-title">New Booking</h5>
+              <p class="action-desc text-muted text-center">Book a new bus ticket for your journey</p>
+            </div>
+          </a>
+        </div>
+        <div class="col-md-4">
+          <a href="{% url 'upcoming_tickets' %}" class="action-card card border-0 shadow-sm h-100 text-decoration-none">
+            <div class="card-body d-flex flex-column align-items-center p-4">
+              <div class="action-icon mb-3">
+                <i class="bi bi-ticket-perforated"></i>
+              </div>
+              <h5 class="action-title">My Tickets</h5>
+              <p class="action-desc text-muted text-center">View your upcoming and past tickets</p>
+            </div>
+          </a>
+        </div>
+        <div class="col-md-4">
+          <a href="{% url 'complaint_suggestion' %}" class="action-card card border-0 shadow-sm h-100 text-decoration-none">
+            <div class="card-body d-flex flex-column align-items-center p-4">
+              <div class="action-icon mb-3">
+                <i class="bi bi-chat-dots"></i>
+              </div>
+              <h5 class="action-title">Support</h5>
+              <p class="action-desc text-muted text-center">Submit complaints or suggestions</p>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Latest Booking -->
+    <div class="latest-booking mb-5">
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <h3 class="section-title mb-0">Latest Booking</h3>
+      </div>
+      
+      {% if latest_booking %}
+        <div class="booking-card card border-0 shadow-sm">
+          <div class="card-body">
+            <div class="row align-items-center">
+              <div class="col-md-6">
+                <div class="route-info d-flex align-items-center">
+                  <div class="route-station">
+                    <div class="fw-bold">{{ latest_booking.bus.route.origin }}</div>
+                    <div class="text-muted small">{{ latest_booking.booking_date|date:"M d, Y" }}</div>
+                  </div>
+                  
+                  <div class="route-path mx-3 flex-grow-1">
+                    <div class="route-line">
+                      <div class="route-dot start"></div>
+                      <div class="route-dash"></div>
+                      <div class="route-dot end"></div>
+                    </div>
+                  </div>
+                  
+                  <div class="route-station text-end">
+                    <div class="fw-bold">{{ latest_booking.bus.route.destination }}</div>
+                    <div class="text-muted small">{{ latest_booking.bus.departure_time|time:"g:i A" }}</div>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="col-md-3 text-center">
+                <div class="booking-status">
+                  {% if latest_booking.status == 'confirmed' %}
+                    <span class="badge bg-success">Confirmed</span>
+                  {% elif latest_booking.status == 'pending' %}
+                    <span class="badge bg-warning">Pending</span>
+                  {% elif latest_booking.status == 'cancelled' %}
+                    <span class="badge bg-danger">Cancelled</span>
+                  {% else %}
+                    <span class="badge bg-secondary">{{ latest_booking.status|title }}</span>
+                  {% endif %}
+                </div>
+                <div class="booking-seats mt-2">
+                  <small class="text-muted">Seats: {{ latest_booking.seat_number }}</small>
+                </div>
+              </div>
+              
+              <div class="col-md-3 text-end">
+                <div class="booking-price">
+                  <div class="fw-bold">Rs {{ latest_booking.total_price|default:latest_booking.bus.price }}</div>
+                </div>
+                <div class="booking-actions mt-2">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      {% else %}
+        <div class="no-bookings-card card border-0 shadow-sm bg-light">
+          <div class="card-body py-5 text-center">
+            <div class="empty-state-icon mb-3">
+              <i class="bi bi-calendar-x"></i>
+            </div>
+            <h5>No Bookings Yet</h5>
+            <p class="text-muted">You haven't made any bookings yet. Book your first bus ticket now!</p>
+            <a href="{% url 'booking' %}" class="btn btn-primary mt-3">Book Now</a>
+          </div>
+        </div>
+      {% endif %}
+    </div>
+
+    <!-- Travel Preferences -->
+    <div class="travel-preferences mb-5">
+      <h3 class="section-title mb-4">Travel Preferences</h3>
+      <div class="row g-3">
+        <div class="col-md-6">
+          <div class="preference-card card border-0 shadow-sm h-100">
+            <div class="card-body p-4">
+              <div class="preference-header d-flex align-items-center mb-3">
+                <div class="preference-icon me-3">
+                  <i class="bi bi-geo-alt"></i>
+                </div>
+                <h5 class="preference-title mb-0">Favorite Routes</h5>
+              </div>
+              {% if favorite_routes %}
+                <ul class="list-group list-group-flush">
+                  {% for route in favorite_routes %}
+                    <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+                      <div>
+                        <div class="fw-bold">{{ route.bus__route__origin }} → {{ route.bus__route__destination }}</div>
+                        <small class="text-muted">{{ route.count }} bookings</small>
+                      </div>
+                      <span class="badge bg-primary rounded-pill">{{ route.count }}</span>
+                    </li>
+                  {% endfor %}
+                </ul>
+              {% else %}
+                <p class="text-muted mb-0">No favorite routes yet. Your most traveled routes will appear here as you make more bookings.</p>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="preference-card card border-0 shadow-sm h-100">
+            <div class="card-body p-4">
+              <div class="preference-header d-flex align-items-center mb-3">
+                <div class="preference-icon me-3">
+                  <i class="bi bi-bus-front"></i>
+                </div>
+                <h5 class="preference-title mb-0">Preferred Bus Types</h5>
+              </div>
+              {% if preferred_bus_types %}
+                <ul class="list-group list-group-flush">
+                  {% for bus_type in preferred_bus_types %}
+                    <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+                      <div>
+                        <div class="fw-bold">{{ bus_type.bus__bus_type }}</div>
+                        <small class="text-muted">{{ bus_type.count }} bookings</small>
+                      </div>
+                      <span class="badge bg-primary rounded-pill">{{ bus_type.count }}</span>
+                    </li>
+                  {% endfor %}
+                </ul>
+              {% else %}
+                <p class="text-muted mb-0">No preferred bus types yet. Your most booked bus types will appear here as you make more bookings.</p>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Styles -->
+<style>
+  /* Dashboard Container */
+  .dashboard-container {
+    padding: 2rem 0;
+    background: linear-gradient(135deg, #f5f7fa 0%, #e4eff9 100%);
+    min-height: 100vh;
+  }
+
+  /* Dashboard Header */
+  .dashboard-header {
+    margin-bottom: 3rem;
+  }
+
+  .welcome-card {
+    border-radius: 16px;
+    overflow: hidden;
+    background: white;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05) !important;
+  }
+
+  .user-avatar {
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(135deg, #0d6efd, #6610f2);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 2.5rem;
+    margin: 0 auto;
+  }
+
+  .welcome-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #212529;
+    margin-bottom: 0.5rem;
+  }
+
+  .welcome-subtitle {
+    font-size: 1.1rem;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  /* User Stats */
+  .user-stats {
+    margin-top: 1.5rem;
+  }
+
+  .stat-item {
+    text-align: center;
+  }
+
+  .stat-number {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #0d6efd;
+  }
+
+  .stat-label {
+    font-size: 0.9rem;
+    color: #6c757d;
+    margin-top: 0.25rem;
+  }
+
+  /* Section Titles */
+  .section-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #212529;
+    position: relative;
+    padding-left: 15px;
+  }
+
+  .section-title::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 5px;
+    height: 70%;
+    background: #0d6efd;
+    border-radius: 3px;
+  }
+
+  /* Quick Actions */
+  .action-card {
+    border-radius: 12px;
+    transition: all 0.3s ease;
+    overflow: hidden;
+    cursor: pointer;
+  }
+
+  .action-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1) !important;
+  }
+
+  .action-icon {
+    width: 60px;
+    height: 60px;
+    background: rgba(13, 110, 253, 0.1);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #0d6efd;
+    font-size: 1.5rem;
+  }
+
+  .action-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #212529;
+    margin-bottom: 0.5rem;
+  }
+
+  .action-desc {
+    font-size: 0.9rem;
+    margin-bottom: 0;
+  }
+
+  /* Latest Booking */
+  .booking-card {
+    border-radius: 12px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+  }
+
+  .booking-card:hover {
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08) !important;
+  }
+
+  .route-info {
+    position: relative;
+  }
+
+  .route-line {
+    position: relative;
+    height: 30px;
+    display: flex;
+    align-items: center;
+  }
+
+  .route-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: #0d6efd;
+    position: relative;
+    z-index: 2;
+  }
+
+  .route-dash {
+    flex-grow: 1;
+    height: 2px;
+    background-color: #0d6efd;
+    position: relative;
+    top: -1px;
+  }
+
+  .booking-price {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #0d6efd;
+  }
+
+  /* No Bookings Card */
+  .no-bookings-card {
+    border-radius: 12px;
+    border: 1px dashed #dee2e6 !important;
+  }
+
+  .empty-state-icon {
+    font-size: 3rem;
+    color: #adb5bd;
+  }
+
+  /* Travel Preferences */
+  .preference-card {
+    border-radius: 12px;
+    transition: all 0.3s ease;
+  }
+
+  .preference-card:hover {
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08) !important;
+  }
+
+  .preference-header {
+    margin-bottom: 1rem;
+  }
+
+  .preference-icon {
+    width: 40px;
+    height: 40px;
+    background: rgba(13, 110, 253, 0.1);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #0d6efd;
+  }
+
+  .preference-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #212529;
+  }
+
+  /* Alert Styling */
+  .alert {
+    border-radius: 8px;
+    border: none;
+  }
+
+  .alert-icon {
+    font-size: 1.25rem;
+    font-weight: bold;
+  }
+
+  /* Responsive Adjustments */
+  @media (max-width: 768px) {
+    .welcome-title {
+      font-size: 1.5rem;
+    }
+    
+    .user-stats {
+      flex-direction: column;
+      gap: 1rem;
+    }
+    
+    .stat-item {
+      margin: 0 !important;
+    }
+    
+    .route-info {
+      flex-direction: column;
+    }
+    
+    .route-path {
+      margin: 1rem 0 !important;
+      width: 100%;
+    }
+  }
+</style>
+
+<!-- Bootstrap Icons -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+{% endblock %}

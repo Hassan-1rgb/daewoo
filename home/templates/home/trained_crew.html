@@ -1,0 +1,59 @@
+{% extends 'home/base.html' %}
+{% load static %}
+
+{% block content %}
+
+  <title>Trained Crew - Daewoo</title>
+  <style>
+    :root{ --max-width:1100px; --gap:24px; --accent:#003366; }
+    *{box-sizing:border-box}
+    body{font-family:Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial; margin:0; color:#222; background:#f7f8fb}
+    .page{max-width:var(--max-width); margin:32px auto; padding:20px; background:#fff; border-radius:10px; box-shadow:0 6px 20px rgba(16,24,40,0.06)}
+    .hero-grid{display:grid; grid-template-columns:1fr 1fr; gap:var(--gap); align-items:start}
+    .hero-image{width:100%; height:auto; border-radius:8px; overflow:hidden}
+    .hero-image img{width:100%; height:auto; object-fit:cover; display:block; border-radius:8px}
+    .content{padding:6px 4px}
+    h1{margin:0 0 12px; color:var(--accent); font-size:1.6rem}
+    h2{margin:8px 0 8px; font-size:1.1rem; color:#0b2540}
+    p{line-height:1.55; margin:8px 0}
+    ul{margin:8px 0 16px 20px}
+    .card{background:#fbfdff; border:1px solid #eef3f8; padding:14px; border-radius:8px}
+    /* Responsive */
+    @media (max-width:800px){
+      .hero-grid{grid-template-columns:1fr;}
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="hero-grid">
+      <!-- LEFT: image -->
+      <div class="hero-image">
+        <img src="{% static 'home/trained-crew.jpeg' %}" alt="Trained Crew" />
+      </div>
+
+      <!-- RIGHT: heading + intro paragraphs -->
+      <div class="content">
+        <h1>Trained Crew</h1>
+        <p>
+          Quality service can be provided by quality conscious people. The only way to maintain the level of quality of our service is to engage the best possible human resources. For this purpose company has a defined procedure of human resource intake. Especially the crew is selected after an extensive screening process and continues with intensive training programs. 
+        </p>
+        <p>
+          The training &amp; development department designs and arranges these training programs. These programs are specially designed by keeping in view the job responsibilities of each role. Each person inducted in the company has to be passed through these programs prior to join the duty. Apart from these orientation programs, department also arranges refresher courses and other professional development programs.
+        </p>
+      </div>
+    </div>
+
+    <!-- BELOW IMAGE: continue remaining text -->
+    <div class="card" style="margin-top:20px">
+      <p>
+        Also customized training programs are arranged by each department to enhance the capabilities of its employee in specific fields. Training programs, for the Crew, are necessary in this regard. On job trainings and refresher courses are held for drivers, hostesses and guards by their departments.
+      </p>
+      <p>
+        Our commitment to excellence requires trained human resource. Our training programs, especially for crew, reflect the quality consciousness of the Company. As a result, the crew consists of a courteous hostess, a driver equipped with modern techniques and a disciplined guard.
+      </p>
+    </div>
+  </div>
+</body>
+
+{% endblock %}

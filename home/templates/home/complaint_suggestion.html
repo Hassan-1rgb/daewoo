@@ -1,0 +1,47 @@
+{% extends "home/base.html" %}
+{% load static %}
+
+{% block title %}Complaints & Suggestions - Daewoo{% endblock %}
+
+{% block content %}
+<div class="page">
+    <h1>Complaints & Suggestions</h1>
+    <p class="text-center text-muted">
+        You can contact us any way that is convenient for you. Available 24/7 via email, phone, or quick contact form below.
+    </p>
+
+    <form method="post" class="row g-3">
+        {% csrf_token %}
+        <div class="col-md-6">{{ form.suggestion_type.label_tag }} {{ form.suggestion_type }}</div>
+        <div class="col-md-6">{{ form.title.label_tag }} {{ form.title }}</div>
+        <div class="col-md-6">{{ form.first_name.label_tag }} {{ form.first_name }}</div>
+        <div class="col-md-6">{{ form.email.label_tag }} {{ form.email }}</div>
+        <div class="col-md-6">{{ form.mobile_number.label_tag }} {{ form.mobile_number }}</div>
+        <div class="col-12">{{ form.message.label_tag }} {{ form.message }}</div>
+        <div class="col-12">
+            <button type="submit" class="btn btn-primary px-4">Submit</button>
+        </div>
+    </form>
+
+    <div class="info-box mt-4">
+        <h4>Address</h4>
+        <p>Head Office: 231-A Ferozepur Road, Lahore 54000, Pakistan</p>
+        <h4>Email</h4>
+        <p>info@daewoo.com.pk</p>
+        <h4>Call Center for Booking</h4>
+        <p>111-007-008 | 03311-007-008 | 0304-111-7-008</p>
+        <h4>Opening Hours</h4>
+        <p>24/7</p>
+        <h4>Complaint Cell</h4>
+        <p>042-111-007-006 - EXT (411) | 0304-111-7-008 | 042-35888870</p>
+        <p>Email: quality.assurance@daewoo.com.pk</p>
+    </div>
+</div>
+
+<style>
+.page { max-width: 1100px; margin: 40px auto; background: #fff; padding: 30px; border-radius: 12px; box-shadow: 0 6px 18px rgba(0,0,0,0.1); }
+h1 { text-align: center; color: #004080; margin-bottom: 20px; }
+.info-box { background: #f0f6ff; padding: 20px; border-radius: 10px; margin-top: 30px; }
+.info-box h4 { color: #004080; margin-bottom: 10px; }
+</style>
+{% endblock %}

@@ -1,0 +1,82 @@
+{% extends 'home/base.html' %}
+{% load static %}
+
+{% block content %}
+
+  <title>Terms & Conditions - Daewoo</title>
+  <style>
+    :root{ --max-width:1100px; --gap:24px; --accent:#003366; }
+    *{box-sizing:border-box}
+    body{font-family:Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+         margin:0; color:#222; background:#f7f8fb}
+    .page{max-width:var(--max-width); margin:32px auto; padding:20px;
+          background:#fff; border-radius:10px; box-shadow:0 6px 20px rgba(16,24,40,0.06)}
+    .hero-grid{display:grid; grid-template-columns:1fr 1fr; gap:var(--gap); align-items:start}
+    .hero-image{width:100%; height:auto; border-radius:8px; overflow:hidden}
+    .hero-image img{width:100%; height:auto; object-fit:cover; display:block; border-radius:8px}
+    .content{padding:6px 4px}
+    h1{margin:0 0 12px; color:var(--accent); font-size:1.6rem}
+    h2{margin:8px 0 8px; font-size:1.1rem; color:#0b2540}
+    p{line-height:1.55; margin:8px 0}
+    ul{margin:8px 0 16px 20px}
+    .card{background:#fbfdff; border:1px solid #eef3f8; padding:14px; border-radius:8px}
+    @media (max-width:800px){
+      .hero-grid{grid-template-columns:1fr;}
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="hero-grid">
+      <!-- LEFT: image -->
+      <div class="hero-image">
+        <img src="{% static 'home/terms-conditions.jpeg' %}" alt="Terms and Conditions" />
+      </div>
+
+      <!-- RIGHT: title + intro -->
+      <div class="content">
+        <h1>Terms &amp; Conditions</h1>
+        <p>
+          Welcome to Daewoo Express. Please read these Terms &amp; Conditions carefully before using our services. 
+        </p>
+        <p>
+          By purchasing tickets, using our buses, terminals, or any other service offered by Daewoo, you agree to these Terms. These cover ticketing, liabilities, refunds, usage of promotional schemes, and your rights as a passenger.
+        </p>
+      </div>
+    </div>
+
+    <!-- full text below -->
+    <div class="card" style="margin-top:20px">
+      <h2>General Terms</h2>
+      <ul>
+        <li>Daewoo reserves the right to amend or change these Terms &amp; Conditions at any time without prior notice.</li>
+        <li>Tickets once issued may have restrictions on changes, refunds or transfers as per applicable policy.</li>
+        <li>Passengers are responsible to arrive at the terminal before departure time. Daewoo is not responsible for delays caused by passengers late arrival.</li>
+      </ul>
+
+      <h2>Refund & Cancellation</h2>
+      <p>
+        Refunds or cancellations will be governed by the Daewoo policy. Any cancellation or refund request must be submitted in accordance with the defined timeframe and procedure. Service charges may apply. 
+      </p>
+
+      <h2>Liability</h2>
+      <p>
+        Daewoo’s liability for loss, damage or delays is limited to the extent permitted by law. Under no circumstance shall Daewoo be liable for indirect or consequential damages. 
+      </p>
+
+      <h2>Promotions & Rewards</h2>
+      <p>
+        The use of promotional schemes like Daewoo Miles or other loyalty programs are subject to their own terms &amp; conditions. Membership, accrual and redemption rules apply. :contentReference[oaicite:3]{index=3}
+      </p>
+
+      <h2>Other Provisions</h2>
+      <ul>
+        <li>Passengers must carry valid identification (CNIC / Passport) during travel.</li>
+        <li>Baggage/liability for luggage beyond the allowed limit is as per Daewoo policy.</li>
+        <li>Daewoo may refuse carriage if passenger or luggage violates legal or safety requirements.</li>
+        <li>All disputes arising shall be subject to jurisdiction of courts in Pakistan.</li>
+      </ul>
+    </div>
+  </div>
+</body>
+{% endblock %}

@@ -1,0 +1,43 @@
+{% extends "home/base.html" %}
+{% load static %}
+
+{% block title %}Multan Metro Bus Service - Daewoo{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+
+  <!-- Main Content -->
+  <div class="row align-items-start service-content">
+
+    <!-- Image Left -->
+    <div class="col-md-6 mb-3 mb-md-0">
+      <img src="{% static 'home/multan-metro.jpeg' %}" alt="Multan Metro Bus" class="img-fluid rounded-3">
+    </div>
+
+    <!-- Text Right -->
+    <div class="col-md-6 service-text">
+      <h2 class="fw-bold text-primary text-uppercase">Multan Metro Bus Service (MMBS)</h2>
+      <p class="subtitle fw-semibold text-secondary">Introduction</p>
+
+      <p>Multan is the 3rd largest city in the Province Punjab and is located on National Highway (N-5) leading to Bahawalpur and Muzaffargarh / Dera Ghazi Khan en-route to Karachi. The city lies east of Chenab River, almost in the geographic center of the country, at a distance of about 966 km from Karachi.</p>
+
+      <p>The Multan Bus Rapid Transit or Multan Metro bus System is a bus rapid transit (BRT) system under construction in Multan, Pakistan. Multan Metro Bus system has 18.5 KM dedicated track running from Bahauddin.</p>
+    </div>
+
+    <!-- Extra Text Under Image -->
+    <div class="col-12 mt-3 extra-text">
+      <p>Zakria University (BZU) to Chowk Kumharan. There is a 12.5 KM elevated track to avoid conflict of Metro bus with other traffic in the congested areas, which runs from the Northern Bypass to BCG Chowk and Veharhi Chowk to General Bus Stand. The System has 21 stations in total while 7 stations are at grade and 14 on elevated track.</p>
+      <p>Initially, the buses would run on dedicated corridors with multiple stations to connect key areas of the city efficiently. The project aims to reduce traffic congestion, improve public transport, and provide commuters with a safe and reliable service.</p>
+    </div>
+
+  </div>
+
+</div>
+
+<style>
+.service-text h2 { font-weight: 900; }
+.service-text p.subtitle { font-size: 1.1rem; color: #555; margin-bottom: 1rem; }
+.service-text p, .extra-text p { font-size: 1rem; line-height: 1.6; color: #333; }
+.extra-text { margin-top: 1rem; }
+</style>
+{% endblock %}

@@ -1,0 +1,109 @@
+{% extends "home/base.html" %}
+{% load static %}
+
+{% block title %}Booking Successful{% endblock %}
+
+{% block content %}
+{% if hide_navbar %}
+  <style>
+    /* Hide the navbar */
+    nav.navbar, .sidebar, .topbar { 
+      display: none !important; 
+    }
+    body {
+      padding-top: 0 !important; /* remove extra space if navbar hidden */
+    }
+  </style>
+{% endif %}
+
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="card border-0 shadow-sm">
+        <div class="card-body p-5 text-center">
+          <div class="success-icon mb-4">
+            {% if status == 'reserved' %}
+              <i class="bi bi-clock-fill text-warning"></i>
+            {% else %}
+              <i class="bi bi-check-circle-fill text-success"></i>
+            {% endif %}
+          </div>
+          
+          <h2 class="mb-3">
+            {% if status == 'reserved' %}Seat Reserved!{% else %}Booking Confirmed!{% endif %}
+          </h2>
+          
+          <p class="text-muted mb-4">
+            {% if status == 'reserved' %}
+              Your seat has been reserved for 30 minutes. Please complete payment to confirm.
+            {% else %}
+              Your bus ticket has been successfully booked. Details are below:
+            {% endif %}
+          </p>
+          
+          <div class="booking-details card bg-light mb-4">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-md-6">
+                  <p class="mb-1"><strong>Booking Number:</strong> {{ booking.booking_number }}</p>
+                  <p class="mb-1"><strong>Route:</strong> {{ booking.bus.route.origin }} to {{ booking.bus.route.destination }}</p>
+                  <p class="mb-1"><strong>Date:</strong> {{ booking.booking_date|date:"F d, Y" }}</p>
+                  <p class="mb-1"><strong>Departure:</strong> {{ booking.bus.departure_time|time:"g:i A" }}</p>
+                </div>
+                <div class="col-md-6">
+                  <p class="mb-1"><strong>Bus Type:</strong> {{ booking.bus.bus_type }}</p>
+                  <p class="mb-1"><strong>Seats:</strong> {{ booking.seat_number }}</p>
+                  <span class="badge {% if status == 'reserved' %}bg-warning{% else %}bg-success{% endif %}">
+                    {{ status|title }}
+                  </span>
+                  {% if status == 'reserved' and reserved_until %}
+                    <p class="mb-1 mt-2"><strong>Reserved Until:</strong> {{ reserved_until|date:"F d, Y H:i" }}</p>
+                  {% endif %}
+                  <p class="mb-1"><strong>Total:</strong> Rs {{ total_price }}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          {% if status == 'reserved' %}
+            <div class="alert alert-warning mb-4">
+              <i class="bi bi-exclamation-triangle-fill me-2"></i>
+              Please complete your payment within 30 minutes to keep your reservation.
+            </div>
+            <div class="d-flex justify-content-center gap-3">
+              <a href="{% url 'payment' booking.id %}" class="btn btn-primary">
+                <i class="bi bi-credit-card me-2"></i> Complete Payment
+              </a>
+              <a href="{% url 'upcoming_tickets' %}" class="btn btn-outline-primary">
+                <i class="bi bi-ticket-perforated me-2"></i> View My Tickets
+              </a>
+            </div>
+          {% else %}
+            {% if not hide_navbar %}
+              <div class="d-flex justify-content-center gap-3">
+                <a href="{% url 'booking' %}" class="btn btn-primary">
+                  <i class="bi bi-plus-circle me-2"></i> Book Another Ticket
+                </a>
+                <a href="{% url 'upcoming_tickets' %}" class="btn btn-outline-primary">
+                  <i class="bi bi-ticket-perforated me-2"></i> View My Tickets
+                </a>
+              </div>
+            {% else %}
+              <div class="d-flex justify-content-center gap-3">
+                <a href="{% url 'admin_management' %}" class="btn btn-secondary">
+                  <i class="bi bi-arrow-left-circle me-2"></i> Back to Admin Panel
+                </a>
+              </div>
+            {% endif %}
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .success-icon { font-size: 5rem; }
+  .booking-details { border-radius: 12px; }
+</style>
+{% endblock %}
